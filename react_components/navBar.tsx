@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LogOut from "./logout";
 
 const NavigationMenu = () => {
   return (
@@ -58,6 +59,7 @@ const NavigationMenu = () => {
         </ul>
       </div>
       <div className="navbar-end"></div>
+      <LogOut />
     </div>
   );
 };
