@@ -1,7 +1,6 @@
 import { createMiddlewareSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { Buffer } from "node:buffer";
 
 import type { Database } from "./types/supabase";
 
@@ -11,12 +10,14 @@ import type { Database } from "./types/supabase";
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  const supabase = createMiddlewareSupabaseClient<Database>({ req, res });
+  const supabase = createMiddlewareSupabaseClient({ req, res });
 
   const {
     data: { session },
     error,
   } = await supabase.auth.getSession();
+
+  console.log(session);
 
   if (!session && req.nextUrl.pathname.startsWith("/required-session")) {
     // Auth condition not met, redirect to home page.

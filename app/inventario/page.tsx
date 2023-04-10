@@ -18,6 +18,7 @@ export default async function Inventario() {
   if (error) console.error(error);
   else console.log(data);
 
+  //if (data == false)
   return (
     <div className=" p-8">
       <main className=" min-h-[100vh]">
