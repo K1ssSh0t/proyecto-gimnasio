@@ -1,6 +1,9 @@
 import { createMiddlewareSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { Buffer } from "node:buffer";
+
+import type { Database } from "./types/supabase";
 
 // this middleware refreshes the user's session and must be run
 // for any Server Component route that uses `createServerComponentSupabaseClient`
@@ -8,10 +11,11 @@ import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  const supabase = createMiddlewareSupabaseClient({ req, res });
+  const supabase = createMiddlewareSupabaseClient<Database>({ req, res });
 
   const {
     data: { session },
+    error,
   } = await supabase.auth.getSession();
 
   if (!session && req.nextUrl.pathname.startsWith("/required-session")) {
@@ -35,4 +39,12 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: ["/server-only", "/user-auth", "/realtime"],
 };
+
+
+
+// Check auth condition
+  if (session?.user.email?.endsWith('@gmail.com')) {
+    // Authentication successful, forward request to protected route.
+    return res
+  }
 */
