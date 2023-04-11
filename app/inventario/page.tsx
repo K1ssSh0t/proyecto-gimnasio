@@ -1,30 +1,23 @@
 import { createServerClient } from "../../utils/supabase-server";
 import InventoryModule from "./inventario";
 
+export const revalidate = 0;
+
 export default async function Inventario() {
   const supabase = createServerClient();
 
-  const { data: user } = await supabase.auth.getUser();
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const userId = user.user?.id;
+  const { data: producto, error } = await supabase.from("producto").select("*");
 
-  let { data, error } = await supabase.rpc("es_empleado", {
-    employee_id: userId,
-  });
-
-  if (error) console.error(error);
-  else console.log(data);
-
-  //if (data == false)
   return (
     <div className=" p-8">
       <main className=" min-h-[100vh]">
-        {data ? (
+        {session ? (
           <>
-            <InventoryModule />
+            <InventoryModule listaProductos={producto || []} />
           </>
         ) : (
           <div>No eres un empleado</div>

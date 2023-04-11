@@ -1,53 +1,65 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSupabase } from "../../components/supabase-provider";
+import { Database } from "../../types/supabase";
 
 /**TODO: Arreglar este componente para que funcione con supabase */
 
-function InventoryModule() {
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    description: "",
-    price: "",
-    quantity: "",
-  });
+type Producto = Database["public"]["Tables"]["producto"]["Row"];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct((prevState) => ({ ...prevState, [name]: value }));
-  };
+function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
+  const { supabase } = useSupabase();
 
-  const handleAddProduct = (e) => {
-    e.preventDefault();
-    setProducts((prevState) => [...prevState, newProduct]);
-    setNewProduct({
-      name: "",
-      description: "",
-      price: "",
-      quantity: "",
-    });
-  };
+  const [productos, setProductos] = useState(listaProductos);
 
-  const handleLowInventoryNotification = (product) => {
-    // Send email notification to management
-    console.log(`Product ${product.name} is running low on inventory.`);
-  };
+  useEffect(() => {
+    setProductos(productos);
+  }, [productos]);
 
-  const handleInventoryUpdate = (productIndex, newQuantity) => {
-    setProducts((prevState) => {
-      const updatedProducts = [...prevState];
-      updatedProducts[productIndex].quantity = newQuantity;
-      if (newQuantity < 10) {
-        handleLowInventoryNotification(updatedProducts[productIndex]);
-      }
-      return updatedProducts;
-    });
-  };
+  useEffect(() => {
+    const channel = supabase
+      .channel("*")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "producto" },
+        (payload) =>
+          setProductos((productos) => [...productos, payload.new as Producto])
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "producto" },
+        (payload) =>
+          setProductos(
+            productos.filter((producto) => producto.id !== payload.old.id)
+          )
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "producto" },
+        (payload) =>
+          setProductos(
+            productos.map((producto) =>
+              producto.id === payload.new.id
+                ? { ...producto, ...payload.new }
+                : producto
+            )
+          )
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, setProductos, productos]);
+
+  /**                   */
 
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">Inventory Management</h1>
-      <form onSubmit={handleAddProduct}>
+      <form
+      //onSubmit={}
+      >
         <div className="mb-4">
           <label
             className="block text-gray-700 font-bold mb-2"
@@ -60,8 +72,8 @@ function InventoryModule() {
             id="product-name"
             type="text"
             name="name"
-            value={newProduct.name}
-            onChange={handleInputChange}
+            // value={newProduct.name}
+            // onChange={handleInputChange}
           />
         </div>
         <div className="mb-4">
@@ -75,8 +87,8 @@ function InventoryModule() {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="product-description"
             name="description"
-            value={newProduct.description}
-            onChange={handleInputChange}
+            ///   value={newProduct.description}
+            //  onChange={handleInputChange}
           ></textarea>
         </div>
         <div className="mb-4">
@@ -92,8 +104,8 @@ function InventoryModule() {
             type="number"
             step="0.01"
             name="price"
-            value={newProduct.price}
-            onChange={handleInputChange}
+            // value={newProduct.price}
+            //  onChange={handleInputChange}
           />
         </div>
         <div className="mb-4">
@@ -108,8 +120,8 @@ function InventoryModule() {
             id="product-quantity"
             type="number"
             name="quantity"
-            value={newProduct.quantity}
-            onChange={handleInputChange}
+            //   value={newProduct.quantity}
+            //  onChange={handleInputChange}
           />
         </div>
         <button
@@ -124,27 +136,27 @@ function InventoryModule() {
         <thead>
           <tr>
             <th className="px-4 py-2">#</th>
-            <th className="px-4 py-2">Product Name</th>
-            <th className="px-4 py-2">Description</th>
-            <th className="px-4 py-2">Price</th>
-            <th className="px-4 py-2">Quantity</th>
+            <th className="px-4 py-2">Product ID</th>
+            <th className="px-4 py-2">Costo</th>
+            <th className="px-4 py-2">Precio Venta</th>
+            <th className="px-4 py-2">Inventario Actual</th>
             <th className="px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {products.map((product, index) => (
+          {productos.map((producto, index) => (
             <tr key={index}>
               <td className="border px-4 py-2">{index + 1}</td>
-              <td className="border px-4 py-2">{product.name}</td>
-              <td className="border px-4 py-2">{product.description}</td>
-              <td className="border px-4 py-2">{product.price}</td>
+              <td className="border px-4 py-2">{producto.id}</td>
+              <td className="border px-4 py-2">{producto.costo}</td>
+              <td className="border px-4 py-2">{producto.precio_venta}</td>
               <td className="border px-4 py-2">
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   type="number"
                   name="quantity"
-                  value={product.quantity}
-                  onChange={(e) => handleInventoryUpdate(index, e.target.value)}
+                  // value={product.quantity}
+                  // onChange={(e) => handleInventoryUpdate(index, e.target.value)}
                 />
               </td>
               <td className="border px-4 py-2">
