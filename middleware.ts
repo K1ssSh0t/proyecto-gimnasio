@@ -14,12 +14,32 @@ export async function middleware(req: NextRequest) {
 
   const {
     data: { session },
-    error,
   } = await supabase.auth.getSession();
 
-  console.log(session);
+  const { data: user } = await supabase.auth.getUser();
 
-  if (!session && req.nextUrl.pathname.startsWith("/required-session")) {
+  const userId = user.user?.id;
+
+  let { data, error } = await supabase.rpc("es_empleado", {
+    employee_id: userId,
+  });
+
+  const checarruta = () => {
+    if (
+      req.nextUrl.pathname.startsWith("/inventario") ||
+      req.nextUrl.pathname.startsWith("/trabajadores") ||
+      req.nextUrl.pathname.startsWith("/ventas")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  if (
+    //!session &&
+    data != true &&
+    checarruta()
+  ) {
     // Auth condition not met, redirect to home page.
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/";
