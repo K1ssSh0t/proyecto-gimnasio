@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useSupabase } from "../../components/supabase-provider";
 import { Database } from "../../types/supabase";
+import { BorrarProducto } from "./borrar_producto";
+import { Modal } from "./actualizar_producto";
 
 /**TODO: Arreglar este componente para que funcione con supabase */
 
@@ -12,19 +14,25 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   const [productos, setProductos] = useState(listaProductos);
 
-  const [productoInicial, setProductoInicial] =
-    useState<Producto["inventario_incial"]>();
+  const [productoInicial, setProductoInicial] = useState<
+    Producto["inventario_incial"] | string
+  >();
 
-  const [productoCaducidad, setProductoCaducidad] =
-    useState<Producto["feche_caducidad"]>();
+  const [productoCaducidad, setProductoCaducidad] = useState<
+    Producto["feche_caducidad"] | string
+  >();
 
-  const [productoCosto, setProductoCosto] = useState<Producto["costo"]>();
+  const [productoCosto, setProductoCosto] = useState<
+    Producto["costo"] | string
+  >();
 
-  const [productoPrecio, setProductoPrcio] =
-    useState<Producto["precio_venta"]>();
+  const [productoPrecio, setProductoPrcio] = useState<
+    Producto["precio_venta"] | string
+  >();
 
-  const [productoActual, setProductoActual] =
-    useState<Producto["inventario_actual"]>();
+  const [productoActual, setProductoActual] = useState<
+    Producto["inventario_actual"] | string
+  >();
 
   useEffect(() => {
     setProductos(productos);
@@ -71,10 +79,10 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
   const handleSummit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const { error } = await supabase.from("producto").insert({
-      costo: productoCosto,
-      precio_venta: productoPrecio,
+      costo: productoCosto as number,
+      precio_venta: productoPrecio as number,
       feche_caducidad: productoCaducidad,
-      inventario_incial: productoInicial,
+      inventario_incial: productoInicial as number,
       inventario_actual: productoActual,
     });
 
@@ -98,7 +106,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               id="product-name"
               type="number"
               name="name"
-              value={productoInicial}
+              value={productoInicial as number}
               onChange={(event) => setProductoInicial(event.target.value)}
             />
           </div>
@@ -114,7 +122,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               id="product-description"
               name="description"
               type="date"
-              value={productoCaducidad}
+              value={productoCaducidad as string}
               onChange={(event) => setProductoCaducidad(event.target.value)}
             ></input>
           </div>
@@ -128,7 +136,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               type="number"
               step="0.01"
               name="price"
-              value={productoCosto}
+              value={productoCosto as number}
               onChange={(event) => setProductoCosto(event.target.value)}
             />
           </div>
@@ -142,7 +150,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               type="number"
               step="0.01"
               name="price"
-              value={productoPrecio}
+              value={productoPrecio as number}
               onChange={(event) => setProductoPrcio(event.target.value)}
             />
           </div>
@@ -155,7 +163,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               id="product-quantity"
               type="number"
               name="quantity"
-              value={productoActual}
+              value={productoActual as string}
               onChange={(event) => setProductoActual(event.target.value)}
             />
           </div>
@@ -171,32 +179,28 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
       </div>
       <h2 className="text-2xl font-bold mt-6 mb-2">Inventory List</h2>
       <div className="overflow-x-auto">
-        <table className="table w-full">
+        <table className=" table  w-full">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Product ID</th>
-              <th>Costo</th>
-              <th>Precio Venta</th>
-              <th>Inventario Actual</th>
-              <th>Actions</th>
+            <tr className=" text-center ">
+              <th style={{ position: "unset" }}>Product ID</th>
+              <th className=" ">index</th>
+              <th className=" ">Costo</th>
+              <th className=" ">Precio Venta</th>
+              <th className=" ">Inventario Actual</th>
+              <th className=" ">Actions</th>
             </tr>
           </thead>
           <tbody>
             {productos.map((producto, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{producto.id}</td>
-                <td>{producto.costo}</td>
-                <td>{producto.precio_venta}</td>
-                <td>{producto.inventario_actual}</td>
-                <td className="">
-                  <button className="text-red-500 hover:text-red-700">
-                    Delete
-                  </button>
-                  <button className=" text-red-500 hover:text-red-700 pl-3">
-                    Actualizar
-                  </button>
+                <td className="">{index + 1}</td>
+                <td className="">{producto.id}</td>
+                <td className="">{producto.costo}</td>
+                <td className="">{producto.precio_venta}</td>
+                <td className="">{producto.inventario_actual}</td>
+                <td className=" flex space-x-4 justify-center">
+                  <BorrarProducto producto={producto} />
+                  <Modal nombreProducto={producto.id} />
                 </td>
               </tr>
             ))}
