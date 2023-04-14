@@ -5,8 +5,6 @@ import { Database } from "../../types/supabase";
 import { BorrarProducto } from "./borrar_producto";
 import { Modal } from "./actualizar_producto";
 
-/**TODO: Arreglar este componente para que funcione con supabase */
-
 type Producto = Database["public"]["Tables"]["producto"]["Row"];
 
 function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
@@ -200,7 +198,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
                 <td className="">{producto.inventario_actual}</td>
                 <td className=" flex space-x-4 justify-center">
                   <BorrarProducto producto={producto} />
-                  <Modal nombreProducto={producto.id} />
+                  <Modal producto={producto} />
                 </td>
               </tr>
             ))}

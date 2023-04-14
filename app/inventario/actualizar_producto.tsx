@@ -1,9 +1,35 @@
 "use clien";
 
 import { useState } from "react";
+import { Database } from "@/types/supabase";
+import { useSupabase } from "@/components/supabase-provider";
 
-export function Modal({ nombreProducto }: { nombreProducto: number }) {
+type Producto = Database["public"]["Tables"]["producto"]["Row"];
+
+export function Modal({ producto }: { producto: Producto }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { supabase } = useSupabase();
+
+  const [productoInicial, setProductoInicial] = useState<
+    Producto["inventario_incial"] | string
+  >(producto.inventario_incial);
+
+  const [productoCaducidad, setProductoCaducidad] = useState<
+    Producto["feche_caducidad"] | string
+  >(producto.feche_caducidad);
+
+  const [productoCosto, setProductoCosto] = useState<
+    Producto["costo"] | string
+  >(producto.costo);
+
+  const [productoPrecio, setProductoPrcio] = useState<
+    Producto["precio_venta"] | string
+  >(producto.precio_venta);
+
+  const [productoActual, setProductoActual] = useState<
+    Producto["inventario_actual"] | string
+  >(producto.inventario_actual);
 
   function openModal() {
     setIsOpen(true);
@@ -11,6 +37,23 @@ export function Modal({ nombreProducto }: { nombreProducto: number }) {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  async function actualizarProducto(e: React.SyntheticEvent) {
+    e.preventDefault();
+
+    const { data, error } = await supabase
+      .from("producto")
+      .update({
+        inventario_actual: productoActual,
+        inventario_incial: productoInicial as number,
+        feche_caducidad: productoCaducidad,
+        costo: productoCosto as number,
+        precio_venta: productoPrecio as number,
+      })
+      .eq("id", producto.id);
+
+    console.log(error);
   }
 
   return (
@@ -32,45 +75,133 @@ export function Modal({ nombreProducto }: { nombreProducto: number }) {
               aria-modal="true"
               aria-labelledby="modal-headline"
             >
-              <div>
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                  <svg
-                    className="h-6 w-6 text-red-600"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </div>
-                <div className="mt-3 text-center sm:mt-5">
-                  <h3
-                    className="text-lg leading-6 font-medium text-gray-200"
-                    id="modal-headline"
-                  >
-                    Modal Title
-                  </h3>
-                  <div className="mt-2">
-                    <p className="text-sm leading-5 text-gray-300">
-                      {nombreProducto}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-5 sm:mt-6">
-                <span className="flex w-full rounded-md shadow-sm">
-                  <button
-                    onClick={closeModal}
-                    className="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                  >
-                    Close
+              <div className=" ">
+                <div className="grid justify-end ">
+                  <button onClick={closeModal}>
+                    <div className=" flex items-center justify-center  h-12 w-12 rounded-full bg-red-100  ">
+                      <svg
+                        className="h-6 w-6 text-red-600 "
+                        stroke="currentColor"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </div>
                   </button>
-                </span>
+                </div>
+                <div className="my-3 text-center sm:my-5">
+                  <form
+                    onSubmit={actualizarProducto}
+                    className=" lg:flex lg:flex-col w-full lg:max-w-3xl "
+                  >
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block  font-bold mb-2"
+                        htmlFor="product-name"
+                      >
+                        Producto Inicial
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                        id="product-name"
+                        type="number"
+                        name="name"
+                        value={productoInicial as number}
+                        onChange={(event) =>
+                          setProductoInicial(event.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block  font-bold mb-2"
+                        htmlFor="product-description"
+                      >
+                        Product caducidad
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                        id="product-description"
+                        name="description"
+                        type="date"
+                        value={productoCaducidad as string}
+                        onChange={(event) =>
+                          setProductoCaducidad(event.target.value)
+                        }
+                      ></input>
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block  font-bold mb-2"
+                        htmlFor="product-price"
+                      >
+                        Product Costo
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                        id="product-price"
+                        type="number"
+                        step="0.01"
+                        name="price"
+                        value={productoCosto as number}
+                        onChange={(event) =>
+                          setProductoCosto(event.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block  font-bold mb-2"
+                        htmlFor="product-price"
+                      >
+                        Product Price
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                        id="product-price"
+                        type="number"
+                        step="0.01"
+                        name="price"
+                        value={productoPrecio as number}
+                        onChange={(event) =>
+                          setProductoPrcio(event.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block font-bold mb-2"
+                        htmlFor="product-quantity"
+                      >
+                        Product Quantity
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                        id="product-quantity"
+                        type="number"
+                        name="quantity"
+                        value={productoActual as string}
+                        onChange={(event) =>
+                          setProductoActual(event.target.value)
+                        }
+                      />
+                    </div>
+                    <div className=" flex justify-center">
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
+                        type="submit"
+                      >
+                        Actualizar Producto
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
