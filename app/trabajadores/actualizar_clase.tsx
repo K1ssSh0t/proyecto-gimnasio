@@ -3,33 +3,43 @@
 import { useState } from "react";
 import { Database } from "@/types/supabase";
 import { useSupabase } from "@/components/supabase-provider";
+import React from "react";
 
-type Producto = Database["public"]["Tables"]["producto"]["Row"];
+type Clase = Database["public"]["Tables"]["clase"]["Row"];
 
-export function Modal({ producto }: { producto: Producto }) {
-  const [isOpen, setIsOpen] = useState(false);
+type Props = {
+  clase: Clase;
+  listaIdsEmpleados: (string | null)[];
+};
 
+const ActualizarClase: React.FC<Props> = ({ clase, listaIdsEmpleados }) => {
   const { supabase } = useSupabase();
 
-  const [productoInicial, setProductoInicial] = useState<
-    Producto["inventario_incial"] | string
-  >(producto.inventario_incial);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const [productoCaducidad, setProductoCaducidad] = useState<
-    Producto["feche_caducidad"] | string
-  >(producto.feche_caducidad);
+  const [claseDescripcion, setClaseDescripcion] = useState<
+    Clase["descripcion"] | string
+  >(clase.descripcion);
 
-  const [productoCosto, setProductoCosto] = useState<
-    Producto["costo"] | string
-  >(producto.costo);
+  const [claseFechaInicio, setClaseFechaInicio] = useState<
+    Clase["fecha_inicio"] | string
+  >(clase.fecha_inicio);
 
-  const [productoPrecio, setProductoPrcio] = useState<
-    Producto["precio_venta"] | string
-  >(producto.precio_venta);
+  const [claseFechaFin, setClaseFechaFin] = useState<
+    Clase["fecha_fin"] | string
+  >(clase.fecha_fin);
 
-  const [productoActual, setProductoActual] = useState<
-    Producto["inventario_actual"] | string
-  >(producto.inventario_actual);
+  const [claseHoraInicio, setClaseHoraInicio] = useState<
+    Clase["hora_inicio"] | string
+  >(clase.hora_inicio);
+
+  const [claseHoraFin, setClaseHoraFin] = useState<Clase["hora_fin"] | string>(
+    clase.hora_fin
+  );
+
+  const [claseEmpleado, setClaseEmpleado] = useState<
+    Clase["id_empleado"] | string
+  >(clase.id_empleado);
 
   function openModal() {
     setIsOpen(true);
@@ -39,19 +49,20 @@ export function Modal({ producto }: { producto: Producto }) {
     setIsOpen(false);
   }
 
-  async function actualizarProducto(e: React.SyntheticEvent) {
+  async function actualizarClase(e: React.SyntheticEvent) {
     e.preventDefault();
 
     const { data, error } = await supabase
-      .from("producto")
+      .from("clase")
       .update({
-        inventario_actual: productoActual,
-        inventario_incial: productoInicial as number,
-        feche_caducidad: productoCaducidad,
-        costo: productoCosto as number,
-        precio_venta: productoPrecio as number,
+        descripcion: claseDescripcion,
+        fecha_fin: claseFechaFin,
+        fecha_inicio: claseFechaInicio,
+        hora_inicio: claseHoraInicio,
+        hora_fin: claseHoraFin,
+        id_empleado: claseEmpleado,
       })
-      .eq("id", producto.id);
+      .eq("id", clase.id);
 
     console.log(error);
   }
@@ -59,7 +70,7 @@ export function Modal({ producto }: { producto: Producto }) {
   return (
     <div>
       <button onClick={openModal} className="btn btn-warning">
-        Actualizar Producto
+        Actualizar Clase
       </button>
       {isOpen ? (
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -97,7 +108,7 @@ export function Modal({ producto }: { producto: Producto }) {
                 </div>
                 <div className="my-3 text-center sm:my-5">
                   <form
-                    onSubmit={actualizarProducto}
+                    onSubmit={actualizarClase}
                     className=" lg:flex lg:flex-col w-full lg:max-w-3xl "
                   >
                     <div className="mb-4 w-full">
@@ -105,16 +116,16 @@ export function Modal({ producto }: { producto: Producto }) {
                         className="block  font-bold mb-2"
                         htmlFor="product-name"
                       >
-                        Producto Inicial
+                        Descripcion
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
                         id="product-name"
-                        type="number"
+                        type="text"
                         name="name"
-                        value={productoInicial as number}
+                        value={claseDescripcion as string}
                         onChange={(event) =>
-                          setProductoInicial(event.target.value)
+                          setClaseDescripcion(event.target.value)
                         }
                       />
                     </div>
@@ -123,16 +134,16 @@ export function Modal({ producto }: { producto: Producto }) {
                         className="block  font-bold mb-2"
                         htmlFor="product-description"
                       >
-                        Product caducidad
+                        Fechas de Inicio
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                         id="product-description"
                         name="description"
                         type="date"
-                        value={productoCaducidad as string}
+                        value={claseFechaInicio as string}
                         onChange={(event) =>
-                          setProductoCaducidad(event.target.value)
+                          setClaseFechaInicio(event.target.value)
                         }
                       ></input>
                     </div>
@@ -141,17 +152,16 @@ export function Modal({ producto }: { producto: Producto }) {
                         className="block  font-bold mb-2"
                         htmlFor="product-price"
                       >
-                        Product Costo
+                        Fecha de Fin
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                         id="product-price"
-                        type="number"
-                        step="0.01"
+                        type="date"
                         name="price"
-                        value={productoCosto as number}
+                        value={claseFechaFin as string}
                         onChange={(event) =>
-                          setProductoCosto(event.target.value)
+                          setClaseFechaFin(event.target.value)
                         }
                       />
                     </div>
@@ -160,17 +170,16 @@ export function Modal({ producto }: { producto: Producto }) {
                         className="block  font-bold mb-2"
                         htmlFor="product-price"
                       >
-                        Product Price
+                        Hora de Inicio
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
                         id="product-price"
-                        type="number"
-                        step="0.01"
+                        type="time"
                         name="price"
-                        value={productoPrecio as number}
+                        value={claseHoraInicio as string}
                         onChange={(event) =>
-                          setProductoPrcio(event.target.value)
+                          setClaseHoraInicio(event.target.value)
                         }
                       />
                     </div>
@@ -179,25 +188,49 @@ export function Modal({ producto }: { producto: Producto }) {
                         className="block font-bold mb-2"
                         htmlFor="product-quantity"
                       >
-                        Product Quantity
+                        Hora de Fin
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
                         id="product-quantity"
-                        type="number"
+                        type="time"
                         name="quantity"
-                        value={productoActual as string}
+                        value={claseHoraFin as string}
                         onChange={(event) =>
-                          setProductoActual(event.target.value)
+                          setClaseHoraFin(event.target.value)
                         }
                       />
+                    </div>
+                    <div className="mb-4 w-full">
+                      <label
+                        className="block font-bold mb-2"
+                        htmlFor="product-quantity"
+                      >
+                        Id Empleado
+                      </label>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                        id="product-quantity"
+                        type="text"
+                        name="quantity"
+                        value={claseEmpleado as string}
+                        onChange={(event) =>
+                          setClaseEmpleado(event.target.value)
+                        }
+                        list="empleados-lista"
+                      />
+                      <datalist id="empleados-lista">
+                        {listaIdsEmpleados?.map((empleado, key) => (
+                          <option key={key} value={empleado!} />
+                        ))}
+                      </datalist>
                     </div>
                     <div className=" flex justify-center">
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
                         type="submit"
                       >
-                        Actualizar Producto
+                        Actualizar Clase
                       </button>
                     </div>
                   </form>
@@ -209,4 +242,6 @@ export function Modal({ producto }: { producto: Producto }) {
       ) : null}
     </div>
   );
-}
+};
+
+export default ActualizarClase;

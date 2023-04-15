@@ -5,8 +5,10 @@ import {
   // Import predefined theme
   ThemeSupa,
 } from "@supabase/auth-ui-shared";
+import { useRouter } from "next/navigation";
 
 import { Auth } from "@supabase/auth-ui-react";
+import { useEffect } from "react";
 // Supabase auth needs to be triggered client-side
 //This is a custom login component, change it at pleasure
 export default function Login() {
@@ -14,6 +16,9 @@ export default function Login() {
   // this `session` is from the root loader - server-side
   // therefore, it can safely be used to conditionally render
   // SSR pages without issues with hydration
+
+  const router = useRouter();
+
   return session ? (
     <></>
   ) : (
