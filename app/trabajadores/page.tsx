@@ -4,7 +4,7 @@ import EmpleadosLista from "./empleados";
 
 import { Database } from "@/types/supabase";
 
-type db = Database["public"];
+type Empleado = Database["public"]["Tables"]["empleados"]["Row"];
 
 export const revalidate = 0;
 
@@ -28,12 +28,19 @@ export default async function Empleados() {
 
   const clases = await getClases(supabase);
 
+  const listaIdsEmpleados: (string | null)[] = empleados.map(
+    (empleado: Empleado) => empleado.id
+  );
+
   return (
     <main>
       <div className=" text-lg text-center text-purple-600">Empleados</div>
       <div className=" ">
         <EmpleadosLista empleados={empleados || []} />
-        <ClasesLista clases={clases || []} />
+        <ClasesLista
+          clases={clases || []}
+          listaIdsEmpleados={listaIdsEmpleados}
+        />
       </div>
     </main>
   );

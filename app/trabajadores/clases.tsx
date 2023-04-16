@@ -1,18 +1,22 @@
 "use client";
 import { Database } from "../../types/supabase";
 import ActualizarClase from "./actualizar_clase";
+import AagregarClase from "./agregar_clase";
 import EliminarClase from "./eliminar_clase";
 
 type Clase = Database["public"]["Tables"]["clase"]["Row"];
-export default function ClasesLista({ clases }: { clases: Clase[] }) {
-  const listaIdsEmpleados: (string | null)[] = clases.map(
-    (clase: Clase) => clase.id_empleado
-  );
 
+type Props = {
+  clases: Clase[];
+  listaIdsEmpleados: (string | null)[];
+};
+
+const ClasesLista: React.FC<Props> = ({ clases, listaIdsEmpleados }) => {
+  // TODO: AGREGAR REALTIME
   return (
     <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
       <h2 className="text-2xl font-bold mt-6 mb-2">Lista de Clases</h2>
-      <button>Agregar Clase</button>
+      <AagregarClase listaIdsEmpleados={listaIdsEmpleados} />
       <div className=" flexoverflow-x-auto w-11/12">
         <table className=" table table-compact w-full">
           <thead>
@@ -51,4 +55,6 @@ export default function ClasesLista({ clases }: { clases: Clase[] }) {
       </div>
     </div>
   );
-}
+};
+
+export default ClasesLista;
