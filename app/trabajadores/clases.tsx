@@ -1,6 +1,6 @@
 "use client";
 import { Database } from "../../types/supabase";
-import ActualizarClase from "./actualizar_clase";
+import { ActualizarClase } from "./actualizar_clase";
 import AagregarClase from "./agregar_clase";
 import EliminarClase from "./eliminar_clase";
 

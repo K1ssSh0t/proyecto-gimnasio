@@ -12,7 +12,10 @@ type Props = {
   listaIdsEmpleados: (string | null)[];
 };
 
-const ActualizarClase: React.FC<Props> = ({ clase, listaIdsEmpleados }) => {
+export const ActualizarClase: React.FC<Props> = ({
+  clase,
+  listaIdsEmpleados,
+}) => {
   const { supabase } = useSupabase();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -243,5 +246,3 @@ const ActualizarClase: React.FC<Props> = ({ clase, listaIdsEmpleados }) => {
     </div>
   );
 };
-
-export default ActualizarClase;

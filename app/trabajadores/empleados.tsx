@@ -1,5 +1,6 @@
 "use client";
 import { Database } from "../../types/supabase";
+import { ActualizarEmpleado } from "./actualizar_empleado";
 
 type Empleado = Database["public"]["Tables"]["empleados"]["Row"];
 
@@ -8,6 +9,7 @@ export default function EmpleadosLista({
 }: {
   empleados: Empleado[];
 }) {
+  // TODO: Agregar realtime
   return (
     <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
       <h2 className="text-2xl font-bold mt-6 mb-2">Lista de Empleados</h2>
@@ -38,7 +40,9 @@ export default function EmpleadosLista({
                 <td className="">{empleado.email}</td>
                 <td className="">{empleado.tipo_empleado}</td>
                 <td className="">{empleado.direccion}</td>
-                <td className=" flex space-x-4 justify-center">Acciones</td>
+                <td className=" flex space-x-4 justify-center">
+                  <ActualizarEmpleado empleado={empleado} />
+                </td>
                 <td className="">Clases</td>
               </tr>
             ))}
