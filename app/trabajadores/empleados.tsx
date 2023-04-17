@@ -1,15 +1,60 @@
 "use client";
 import { Database } from "../../types/supabase";
 import { ActualizarEmpleado } from "./actualizar_empleado";
+import { useEffect, useState } from "react";
+import { useSupabase } from "../../components/supabase-provider";
 
 type Empleado = Database["public"]["Tables"]["empleados"]["Row"];
 
 export default function EmpleadosLista({
-  empleados,
+  empleadosLista,
 }: {
-  empleados: Empleado[];
+  empleadosLista: Empleado[];
 }) {
-  // TODO: Agregar realtime
+  const { supabase } = useSupabase();
+
+  const [empleados, setEmpleados] = useState(empleadosLista);
+
+  useEffect(() => {
+    setEmpleados(empleados);
+  }, [empleados]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("cambio_tabla_empleados")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "empleados" },
+        (payload) =>
+          setEmpleados((empleados) => [...empleados, payload.new as Empleado])
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "empleados" },
+        (payload) =>
+          setEmpleados(
+            empleados.filter((empleado) => empleado.id !== payload.old.id)
+          )
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "empleados" },
+        (payload) =>
+          setEmpleados(
+            empleados.map((empleado) =>
+              empleado.id === payload.new.id
+                ? { ...empleado, ...payload.new }
+                : empleado
+            )
+          )
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, setEmpleados, empleados]);
+
   return (
     <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
       <h2 className="text-2xl font-bold mt-6 mb-2">Lista de Empleados</h2>

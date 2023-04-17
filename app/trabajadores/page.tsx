@@ -36,9 +36,9 @@ export default async function Empleados() {
     <main>
       <div className=" text-lg text-center text-purple-600">Empleados</div>
       <div className=" ">
-        <EmpleadosLista empleados={empleados || []} />
+        <EmpleadosLista empleadosLista={empleados || []} />
         <ClasesLista
-          clases={clases || []}
+          clasesLista={clases || []}
           listaIdsEmpleados={listaIdsEmpleados}
         />
       </div>

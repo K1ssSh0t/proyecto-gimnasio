@@ -1,18 +1,57 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Database } from "../../types/supabase";
 import { ActualizarClase } from "./actualizar_clase";
 import AagregarClase from "./agregar_clase";
 import EliminarClase from "./eliminar_clase";
+import { useSupabase } from "../../components/supabase-provider";
 
 type Clase = Database["public"]["Tables"]["clase"]["Row"];
 
 type Props = {
-  clases: Clase[];
+  clasesLista: Clase[];
   listaIdsEmpleados: (string | null)[];
 };
 
-const ClasesLista: React.FC<Props> = ({ clases, listaIdsEmpleados }) => {
-  // TODO: AGREGAR REALTIME
+const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
+  const [clases, setClases] = useState(clasesLista);
+  const { supabase } = useSupabase();
+
+  useEffect(() => {
+    setClases(clases);
+  }, [clases]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("cambio_tabla_clase")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "clase" },
+        (payload) => setClases((clases) => [...clases, payload.new as Clase])
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "clase" },
+        (payload) =>
+          setClases(clases.filter((clase) => clase.id !== payload.old.id))
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "clase" },
+        (payload) =>
+          setClases(
+            clases.map((clase) =>
+              clase.id === payload.new.id ? { ...clase, ...payload.new } : clase
+            )
+          )
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, setClases, clases]);
+
   return (
     <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
       <h2 className="text-2xl font-bold mt-6 mb-2">Lista de Clases</h2>
