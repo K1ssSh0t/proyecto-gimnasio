@@ -57,21 +57,22 @@ export default function EmpleadosLista({
 
   return (
     <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
-      <h2 className="text-2xl font-bold mt-6 mb-2">Lista de Empleados</h2>
+      <h2 className="text-2xl  mt-6 mb-2">Lista de Empleados</h2>
       <div className=" flexoverflow-x-auto w-11/12">
         <table className=" table table-compact w-full">
           <thead>
-            <tr className=" text-center ">
-              <th style={{ position: "unset" }}>Empleado ID</th>
-              <th className=" ">Nombre</th>
-              <th className=" ">Apellido Paterno</th>
-              <th className=" ">Apellido Materno</th>
-              <th className=" ">Telefono</th>
-              <th className=" ">Correo</th>
-              <th className=" ">Puesto</th>
-              <th className=" ">Direccion</th>
-              <th className=" ">Acciones</th>
-              <th className=" ">Clases</th>
+            <tr className=" text-center  ">
+              <th style={{ position: "unset", textTransform: "capitalize" }}>
+                Empleado ID
+              </th>
+              <th className=" capitalize ">Nombre</th>
+              <th className=" capitalize">Apellido Paterno</th>
+              <th className=" capitalize ">Apellido Materno</th>
+              <th className=" capitalize ">Telefono</th>
+              <th className=" capitalize">Correo</th>
+              <th className="capitalize ">Puesto</th>
+              <th className="capitalize ">Direccion</th>
+              <th className=" capitalzie">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -88,7 +89,6 @@ export default function EmpleadosLista({
                 <td className=" flex space-x-4 justify-center">
                   <ActualizarEmpleado empleado={empleado} />
                 </td>
-                <td className="">Clases</td>
               </tr>
             ))}
           </tbody>

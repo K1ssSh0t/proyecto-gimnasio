@@ -65,7 +65,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
 
   return (
     <div>
-      <button onClick={openModal} className="btn btn-warning">
+      <button onClick={openModal} className="btn btn-info">
         Agregar Clase
       </button>
       {isOpen ? (

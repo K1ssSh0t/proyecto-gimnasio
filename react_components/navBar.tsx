@@ -45,15 +45,15 @@ const NavigationMenu = () => {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li className="">
+          <li className=" text-xl">
             <Link href="/ventas">Ventas</Link>
           </li>
-          <li>
+          <li className=" text-xl">
             <Link href="/inventario" className="justify-between">
               Inventario
             </Link>
           </li>
-          <li className=" ">
+          <li className=" text-xl ">
             <Link href="/trabajadores">Trabajadores</Link>
           </li>
         </ul>

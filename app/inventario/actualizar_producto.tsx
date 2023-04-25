@@ -58,8 +58,8 @@ export function Modal({ producto }: { producto: Producto }) {
 
   return (
     <div>
-      <button onClick={openModal} className="btn btn-warning">
-        Actualizar Producto
+      <button onClick={openModal} className="btn btn-info">
+        Actualizar
       </button>
       {isOpen ? (
         <div className="fixed z-10 inset-0 overflow-y-auto">

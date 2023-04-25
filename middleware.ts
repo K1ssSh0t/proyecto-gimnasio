@@ -16,53 +16,27 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const { data: user } = await supabase.auth.getUser();
-
-  const userId = user.user?.id;
+  const userId = session?.user.id;
 
   let { data, error } = await supabase.rpc("es_empleado", {
     employee_id: userId,
   });
 
-  const checarruta = () => {
-    if (
-      req.nextUrl.pathname.startsWith("/inventario") ||
-      req.nextUrl.pathname.startsWith("/trabajadores") ||
-      req.nextUrl.pathname.startsWith("/ventas")
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  if (
-    //!session &&
-    data != true &&
-    checarruta()
-  ) {
-    // Auth condition not met, redirect to home page.
-    const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = "/";
-    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
-    return NextResponse.redirect(redirectUrl);
+  if (data) {
+    return res;
   }
 
-  return res;
-  /*
-  if (session) return res;
   const redirectUrl = req.nextUrl.clone();
   redirectUrl.pathname = "/";
   redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
-  return NextResponse.redirect(redirectUrl);*/
+  return NextResponse.redirect(redirectUrl);
 }
 
-/*
 export const config = {
-  matcher: ["/server-only", "/user-auth", "/realtime"],
+  matcher: ["/inventario", "/trabajadores", "/ventas"],
 };
 
-
-
+/*
 // Check auth condition
   if (session?.user.email?.endsWith('@gmail.com')) {
     // Authentication successful, forward request to protected route.

@@ -18,6 +18,13 @@ export default function Login() {
   // SSR pages without issues with hydration
 
   const router = useRouter();
+  /*
+  useEffect(() => {
+    if (!session) {
+      router.refresh();
+      // window.location.reload();
+    }
+  }, [session]);*/
 
   return session ? (
     <></>

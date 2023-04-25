@@ -72,8 +72,8 @@ export const ActualizarClase: React.FC<Props> = ({
 
   return (
     <div>
-      <button onClick={openModal} className="btn btn-warning">
-        Actualizar Clase
+      <button onClick={openModal} className="btn btn-info">
+        Actualizar
       </button>
       {isOpen ? (
         <div className="fixed z-10 inset-0 overflow-y-auto">

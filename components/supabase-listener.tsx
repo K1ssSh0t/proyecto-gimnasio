@@ -25,6 +25,7 @@ export default function SupabaseListener({
         // reload the page to fetch fresh server data
         // https://beta.nextjs.org/docs/data-fetching/mutating
         router.refresh();
+        window.location.reload();
       }
     });
 

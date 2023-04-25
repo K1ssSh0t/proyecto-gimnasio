@@ -4,6 +4,7 @@ import { useState } from "react";
 /** TODO: Arreglar este componente para que funcione con supabase */
 
 function SalesModule() {
+  /*
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
@@ -189,6 +190,7 @@ function SalesModule() {
       </div>
     </div>
   );
+  */
 }
 
 export default SalesModule;
