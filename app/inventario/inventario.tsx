@@ -5,6 +5,8 @@ import { Database } from "../../types/supabase";
 import { BorrarProducto } from "./borrar_producto";
 import { Modal } from "./actualizar_producto";
 
+import ReactPaginate from "react-paginate";
+
 type Producto = Database["public"]["Tables"]["producto"]["Row"];
 
 function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
@@ -12,6 +14,31 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   const [productos, setProductos] = useState(listaProductos);
 
+  //
+  const [currentPage, setCurrentPage] = useState(0);
+  const PER_PAGE = 5;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = productos
+    .slice(offset, offset + PER_PAGE)
+    .map((producto, index) => (
+      <tr key={index}>
+        <td className="">{index + 1}</td>
+        <td className="">{producto.id}</td>
+        <td className="">{producto.costo}</td>
+        <td className="">{producto.precio_venta}</td>
+        <td className="">{producto.inventario_actual}</td>
+        <td className=" flex space-x-4 justify-center">
+          <BorrarProducto producto={producto} />
+          <Modal producto={producto} />
+        </td>
+      </tr>
+    ));
+  const pageCount = Math.ceil(productos.length / PER_PAGE);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  //
   const [productoInicial, setProductoInicial] = useState<
     Producto["inventario_incial"] | string
   >();
@@ -191,22 +218,24 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               <th className=" ">Acciones</th>
             </tr>
           </thead>
-          <tbody>
-            {productos.map((producto, index) => (
-              <tr key={index}>
-                <td className="">{index + 1}</td>
-                <td className="">{producto.id}</td>
-                <td className="">{producto.costo}</td>
-                <td className="">{producto.precio_venta}</td>
-                <td className="">{producto.inventario_actual}</td>
-                <td className=" flex space-x-4 justify-center">
-                  <BorrarProducto producto={producto} />
-                  <Modal producto={producto} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          <tbody>{currentPageData}</tbody>
         </table>
+        <div className=" flex justify-center text-center">
+          <ReactPaginate
+            previousLabel={"← Previous"}
+            nextLabel={"Next →"}
+            pageCount={pageCount}
+            onPageChange={handlePageClick}
+            disabledClassName="btn-disabled "
+            activeClassName="[&>a]:btn-active "
+            pageLinkClassName="btn rounded-none"
+            className=" btn-group "
+            nextClassName="btn rounded-r-lg  "
+            previousClassName=" btn rounded-l-lg "
+            nextLinkClassName="link link-hover"
+            previousLinkClassName="link link-hover "
+          />
+        </div>
       </div>
     </div>
   );
