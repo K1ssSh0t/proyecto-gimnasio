@@ -4,6 +4,8 @@ import { ActualizarEmpleado } from "./actualizar_empleado";
 import { useEffect, useState } from "react";
 import { useSupabase } from "../../components/supabase-provider";
 
+import ReactPaginate from "react-paginate";
+
 type Empleado = Database["public"]["Tables"]["empleados"]["Row"];
 
 export default function EmpleadosLista({
@@ -14,6 +16,36 @@ export default function EmpleadosLista({
   const { supabase } = useSupabase();
 
   const [empleados, setEmpleados] = useState(empleadosLista);
+
+  //
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const PER_PAGE = 5;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = empleados
+    .slice(offset, offset + PER_PAGE)
+    .map((empleado, index) => (
+      <tr key={index}>
+        <td className="">{empleado.id}</td>
+        <td className="">{empleado.nombre}</td>
+        <td className="">{empleado.apellido_p}</td>
+        <td className="">{empleado.apellido_m}</td>
+        <td className="">{empleado.telefono}</td>
+        <td className="">{empleado.email}</td>
+        <td className="">{empleado.tipo_empleado}</td>
+        <td className="">{empleado.direccion}</td>
+        <td className=" flex space-x-4 justify-center">
+          <ActualizarEmpleado empleado={empleado} />
+        </td>
+      </tr>
+    ));
+  const pageCount = Math.ceil(empleados.length / PER_PAGE);
+
+  function handlePageClick({ selected: selectedPage }: { selected: number }) {
+    setCurrentPage(selectedPage);
+  }
+
+  //
 
   useEffect(() => {
     setEmpleados(empleados);
@@ -75,24 +107,24 @@ export default function EmpleadosLista({
               <th className=" capitalzie">Acciones</th>
             </tr>
           </thead>
-          <tbody>
-            {empleados.map((empleado, index) => (
-              <tr key={index}>
-                <td className="">{empleado.id}</td>
-                <td className="">{empleado.nombre}</td>
-                <td className="">{empleado.apellido_p}</td>
-                <td className="">{empleado.apellido_m}</td>
-                <td className="">{empleado.telefono}</td>
-                <td className="">{empleado.email}</td>
-                <td className="">{empleado.tipo_empleado}</td>
-                <td className="">{empleado.direccion}</td>
-                <td className=" flex space-x-4 justify-center">
-                  <ActualizarEmpleado empleado={empleado} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          <tbody>{currentPageData}</tbody>
         </table>
+        <div className=" flex justify-center text-center">
+          <ReactPaginate
+            previousLabel={"← Previous"}
+            nextLabel={"Next →"}
+            pageCount={pageCount}
+            onPageChange={handlePageClick}
+            disabledClassName="btn-disabled "
+            activeClassName="[&>a]:btn-active "
+            pageLinkClassName="btn rounded-none"
+            className=" btn-group "
+            nextClassName="btn rounded-r-lg  "
+            previousClassName=" btn rounded-l-lg "
+            nextLinkClassName="link link-hover"
+            previousLinkClassName="link link-hover "
+          />
+        </div>
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
     ));
   const pageCount = Math.ceil(productos.length / PER_PAGE);
 
-  function handlePageClick({ selected: selectedPage }) {
+  function handlePageClick({ selected: selectedPage }: { selected: number }) {
     setCurrentPage(selectedPage);
   }
   //

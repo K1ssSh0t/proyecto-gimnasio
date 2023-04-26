@@ -6,6 +6,8 @@ import AagregarClase from "./agregar_clase";
 import EliminarClase from "./eliminar_clase";
 import { useSupabase } from "../../components/supabase-provider";
 
+import ReactPaginate from "react-paginate";
+
 type Clase = Database["public"]["Tables"]["clase"]["Row"];
 
 type Props = {
@@ -16,6 +18,38 @@ type Props = {
 const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
   const [clases, setClases] = useState(clasesLista);
   const { supabase } = useSupabase();
+  //
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const PER_PAGE = 5;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = clases
+    .slice(offset, offset + PER_PAGE)
+    .map((clase, index) => (
+      <tr key={index}>
+        <td className="">{clase.id}</td>
+        <td className="">{clase.descripcion}</td>
+        <td className="">{clase.fecha_inicio}</td>
+        <td className="">{clase.fecha_fin}</td>
+        <td className="">{clase.hora_inicio}</td>
+        <td className="">{clase.hora_fin}</td>
+        <td className="">{clase.id_empleado}</td>
+        <td className=" flex space-x-4 justify-center">
+          <EliminarClase claseId={clase.id} />
+          <ActualizarClase
+            clase={clase}
+            listaIdsEmpleados={listaIdsEmpleados}
+          />
+        </td>
+      </tr>
+    ));
+  const pageCount = Math.ceil(clases.length / PER_PAGE);
+
+  function handlePageClick({ selected: selectedPage }: { selected: number }) {
+    setCurrentPage(selectedPage);
+  }
+
+  //
 
   useEffect(() => {
     setClases(clases);
@@ -70,27 +104,24 @@ const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
               <th className=" ">Acciones</th>
             </tr>
           </thead>
-          <tbody>
-            {clases.map((clase, index) => (
-              <tr key={index}>
-                <td className="">{clase.id}</td>
-                <td className="">{clase.descripcion}</td>
-                <td className="">{clase.fecha_inicio}</td>
-                <td className="">{clase.fecha_fin}</td>
-                <td className="">{clase.hora_inicio}</td>
-                <td className="">{clase.hora_fin}</td>
-                <td className="">{clase.id_empleado}</td>
-                <td className=" flex space-x-4 justify-center">
-                  <EliminarClase claseId={clase.id} />
-                  <ActualizarClase
-                    clase={clase}
-                    listaIdsEmpleados={listaIdsEmpleados}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          <tbody>{currentPageData}</tbody>
         </table>
+        <div className=" flex justify-center text-center">
+          <ReactPaginate
+            previousLabel={"← Previous"}
+            nextLabel={"Next →"}
+            pageCount={pageCount}
+            onPageChange={handlePageClick}
+            disabledClassName="btn-disabled "
+            activeClassName="[&>a]:btn-active "
+            pageLinkClassName="btn rounded-none"
+            className=" btn-group "
+            nextClassName="btn rounded-r-lg  "
+            previousClassName=" btn rounded-l-lg "
+            nextLinkClassName="link link-hover"
+            previousLinkClassName="link link-hover "
+          />
+        </div>
       </div>
     </div>
   );
