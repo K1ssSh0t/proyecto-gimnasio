@@ -222,8 +222,8 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
         </table>
         <div className=" flex justify-center text-center">
           <ReactPaginate
-            previousLabel={"← Previous"}
-            nextLabel={"Next →"}
+            previousLabel={"← Anterior"}
+            nextLabel={"Siguiente  →"}
             pageCount={pageCount}
             onPageChange={handlePageClick}
             disabledClassName="btn-disabled "

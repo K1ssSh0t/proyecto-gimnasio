@@ -1,0 +1,43 @@
+{
+  "sign_up": {
+    "email_label": "Dirección de correo electrónico",
+    "password_label": "Crear contraseña",
+    "email_input_placeholder": "Su dirección de correo electrónico",
+    "password_input_placeholder": "Su contraseña",
+    "button_label": "Registrarse",
+    "loading_button_label": "Registrando...",
+    "social_provider_text": "Registrarse con {{provider}}",
+    "link_text": "¿No tiene una cuenta? Regístrese"
+  },
+  "sign_in": {
+    "email_label": "Dirección de correo electrónico",
+    "password_label": "Contraseña",
+    "email_input_placeholder": "Su dirección de correo electrónico",
+    "password_input_placeholder": "Su contraseña",
+    "button_label": "Iniciar sesión",
+    "loading_button_label": "Iniciando sesión...",
+    "social_provider_text": "Iniciar sesión con {{provider}}",
+    "link_text": "¿Ya tiene una cuenta? Iniciar sesión"
+  },
+  "magic_link": {
+    "email_input_label": "Dirección de correo electrónico",
+    "email_input_placeholder": "Su dirección de correo electrónico",
+    "button_label": "Enviar Magic Link",
+    "loading_button_label": "Enviando Magic Link...",
+    "link_text": "Enviar un Magic Link por correo electrónico"
+  },
+  "forgotten_password": {
+    "email_label": "Dirección de correo electrónico",
+    "password_label": "Su contraseña",
+    "email_input_placeholder": "Su dirección de correo electrónico",
+    "button_label": "Enviar instrucciones para restablecer la contraseña",
+    "loading_button_label": "Enviando instrucciones...",
+    "link_text": "¿Olvidó su contraseña?"
+  },
+  "update_password": {
+    "password_label": "Nueva contraseña",
+    "password_input_placeholder": "Su nueva contraseña",
+    "button_label": "Actualizar contraseña",
+    "loading_button_label": "Actualizando contraseña..."
+  }
+}

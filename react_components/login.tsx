@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 
 import { Auth } from "@supabase/auth-ui-react";
 import { useEffect } from "react";
+
+import * as es from "./esp.json";
 // Supabase auth needs to be triggered client-side
 //This is a custom login component, change it at pleasure
 export default function Login() {
@@ -35,6 +37,7 @@ export default function Login() {
         appearance={{ theme: ThemeSupa }}
         // @ts-ignore
         providers={null}
+        localization={{ variables: es }}
       />
     </div>
   );
