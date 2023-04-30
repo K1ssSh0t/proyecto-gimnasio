@@ -116,7 +116,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   return (
     <div className="p-6 ">
-      <h1 className="text-3xl font-bold mb-6">Modulo de Inventario</h1>
+      <h1 className="text-3xl font-bold mb-6">Módulo de Inventario</h1>
       <div className=" flex justify-center ">
         <form
           // TODO: Agregar mejores estilos a los formularios y required

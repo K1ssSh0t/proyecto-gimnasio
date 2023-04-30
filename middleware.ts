@@ -25,7 +25,6 @@ export async function middleware(req: NextRequest) {
   if (data) {
     return res;
   }
-
   const redirectUrl = req.nextUrl.clone();
   redirectUrl.pathname = "/";
   redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
