@@ -32,8 +32,8 @@ export default function MisDatos({ cliente }: { cliente: Clientes }) {
 
   return (
     <div className=" flex justify-center items-center p-4">
-      <div className="card w-4/5 bg-base-200 shadow-xl">
-        <div className="card-body text-secondary">
+      <div className="card w-4/5 bg-base-300 shadow-xl">
+        <div className="card-body ">
           <form
             onSubmit={updateCliente}
             className=" flex flex-col items-center justify-center"

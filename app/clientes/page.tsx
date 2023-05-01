@@ -2,12 +2,14 @@ import { createServerClient } from "../../utils/supabase-server";
 import { MiMembresia } from "./miMembresia";
 import MisDatos from "./misdatos";
 
+export const revalidate = 0;
+
 async function getMembresia(supabase: any, userId: string | undefined) {
   let { data: membresia, error } = await supabase
     .from("membresia")
     .select("*")
     .eq("id_cliente", userId);
-  return membresia;
+  return membresia[0];
 }
 export default async function Clientes() {
   const supabase = createServerClient();
@@ -27,12 +29,16 @@ export default async function Clientes() {
 
   const membresia = await getMembresia(supabase, userId);
 
-  return (
+  return session ? (
     <main>
-      <div className=" text-lg text-center text-purple-600">
+      <div className=" text-lg text-center flex flex-col w-full ">
         <MisDatos cliente={cliente} />
+        <div className="divider w-4/5 self-center"></div>
+
         <MiMembresia membresia={membresia} />
       </div>
     </main>
+  ) : (
+    <div></div>
   );
 }

@@ -17,7 +17,6 @@ export default function LogOut() {
     }
     router.refresh();
     window.location.reload();
-    // TODO: Agregar otra forma de recargar la pagina ??? *
   };
 
   // this `session` is from the root loader - server-side

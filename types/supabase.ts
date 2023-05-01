@@ -222,6 +222,7 @@ export interface Database {
       };
       tipo_membresia: {
         Row: {
+          url_imagen: string | undefined;
           descripcion: string | null;
           id: number;
         };

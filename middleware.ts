@@ -31,6 +31,8 @@ export async function middleware(req: NextRequest) {
   return NextResponse.redirect(redirectUrl);
 }
 
+// TODO: Modificar para que redirija a la pagina de login si no tiene una session activa y redirija de la ruta clientes
+
 export const config = {
   matcher: ["/inventario", "/trabajadores", "/ventas"],
 };
