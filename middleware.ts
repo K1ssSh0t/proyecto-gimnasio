@@ -22,20 +22,56 @@ export async function middleware(req: NextRequest) {
     employee_id: userId,
   });
 
-  if (data) {
+  const checarrutaAdmin = () => {
+    if (
+      req.nextUrl.pathname.startsWith("/inventario") ||
+      req.nextUrl.pathname.startsWith("/trabajadores") ||
+      req.nextUrl.pathname.startsWith("/ventas")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const checarrutaCliente = () => {
+    if (req.nextUrl.pathname.startsWith("/clientes")) {
+      return true;
+    }
+    return false;
+  };
+
+  if (data != true && checarrutaAdmin()) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/";
+    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
+  if (!session) {
+    if (checarrutaCliente()) {
+      const redirectUrl = req.nextUrl.clone();
+      redirectUrl.pathname = "/";
+      redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
+      return NextResponse.redirect(redirectUrl);
+    }
     return res;
   }
-  const redirectUrl = req.nextUrl.clone();
-  redirectUrl.pathname = "/";
-  redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
-  return NextResponse.redirect(redirectUrl);
+  if (data && checarrutaCliente()) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/";
+    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
+    return res;
+  }
+
+  return res;
 }
 
 // TODO: Modificar para que redirija a la pagina de login si no tiene una session activa y redirija de la ruta clientes
 
+/*
 export const config = {
   matcher: ["/inventario", "/trabajadores", "/ventas"],
-};
+};*/
 
 /*
 // Check auth condition
