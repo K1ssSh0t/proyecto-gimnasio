@@ -69,7 +69,7 @@ export default function MisDatos({ cliente }: { cliente: Clientes }) {
                   placeholder="example@email.com"
                   className="input input-bordered w-full max-w-xs"
                   value={clienteEmail!}
-                  disabled
+                  readOnly
                 />
                 <label className="label">
                   <span className="label-text">Telefono</span>

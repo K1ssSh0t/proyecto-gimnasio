@@ -90,7 +90,7 @@ export default function EmpleadosLista({
   return (
     <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
       <h2 className="text-2xl  mt-6 mb-2">Lista de Empleados</h2>
-      <div className=" flexoverflow-x-auto w-11/12">
+      <div className="  overflow-x-auto w-11/12">
         <table className=" table table-compact w-full">
           <thead>
             <tr className=" text-center  ">

@@ -60,13 +60,10 @@ export async function middleware(req: NextRequest) {
     redirectUrl.pathname = "/";
     redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
     return NextResponse.redirect(redirectUrl);
-    return res;
   }
 
   return res;
 }
-
-// TODO: Modificar para que redirija a la pagina de login si no tiene una session activa y redirija de la ruta clientes
 
 /*
 export const config = {

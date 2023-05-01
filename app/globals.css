@@ -3,3 +3,13 @@
 @tailwind utilities;
 
 
+.custom-btn {
+    @apply w-[13em] h-[4.2em] bg-[#212121] text-xs px-[0.25em] py-[0.1em] rounded-[0.3em] border-[0.08em] border-solid border-white;
+  }
+.custom-span{
+    @apply relative flex justify-center items-center w-[8.25em] h-[2.5em] bg-[#212121] text-[1.5em] text-white shadow-[0_0.4em_0.1em_0.019em_#fff] rounded-[0.2em] border-[0.08em] border-solid border-white bottom-[0.4em] hover:transition-all hover:duration-[0.2s] hover:translate-x-0 hover:translate-y-[0.4em] hover:shadow-[0_0_0_0_#fff];
+  }
+ .custom-span:not(hover) {
+    @apply transition-all duration-[0.2s];
+  }
+  

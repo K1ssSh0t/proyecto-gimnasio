@@ -1,9 +1,14 @@
-"use client";
-import { useState } from "react";
+import { createServerClient } from "../../utils/supabase-server";
+import InterfazVentas from "./interfazVentas";
 
-/** TODO: Arreglar este componente para que funcione con supabase */
+export const revalidate = 0;
 
-function SalesModule() {
+export default async function SalesModule() {
+  return (
+    <div className="container mx-auto">
+      <InterfazVentas />
+    </div>
+  );
   /*
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
@@ -192,5 +197,3 @@ function SalesModule() {
   );
   */
 }
-
-export default SalesModule;
