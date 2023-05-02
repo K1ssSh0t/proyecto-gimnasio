@@ -188,6 +188,7 @@ export interface Database {
           inventario_actual: string | null;
           inventario_incial: number | null;
           precio_venta: number | null;
+          nombre: string | null;
         };
         Insert: {
           costo?: number | null;
@@ -196,6 +197,7 @@ export interface Database {
           inventario_actual?: string | null;
           inventario_incial?: number | null;
           precio_venta?: number | null;
+          nombre?: string | null;
         };
         Update: {
           costo?: number | null;
@@ -204,6 +206,7 @@ export interface Database {
           inventario_actual?: string | null;
           inventario_incial?: number | null;
           precio_venta?: number | null;
+          nombre?: string | null;
         };
       };
       tipo_empleado: {

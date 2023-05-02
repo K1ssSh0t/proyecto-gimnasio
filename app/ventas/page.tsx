@@ -3,10 +3,19 @@ import InterfazVentas from "./interfazVentas";
 
 export const revalidate = 0;
 
+async function getProductosNombre(supabase: any) {
+  let { data: producto, error } = await supabase.from("producto").select("*");
+  return producto;
+}
+
 export default async function SalesModule() {
+  const supabase = createServerClient();
+
+  const Productos = await getProductosNombre(supabase);
+
   return (
     <div className="container mx-auto">
-      <InterfazVentas />
+      <InterfazVentas productos={Productos} />
     </div>
   );
   /*
