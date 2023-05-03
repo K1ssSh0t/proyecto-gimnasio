@@ -1,25 +1,85 @@
 "use client";
 import * as React from "react";
 import { Database } from "@/types/supabase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DescribcionProductos } from "./descripcionProductos";
+import { useSupabase } from "../../components/supabase-provider";
 
 type Producto = Database["public"]["Tables"]["producto"]["Row"];
 
+type Venta = Database["public"]["Tables"]["venta"]["Row"];
+
+type Correos = {
+  email: string | undefined;
+  id: string | undefined;
+};
+
 export default function InterfazVentas({
   productos,
+  correos,
 }: {
   productos: Producto[];
+  correos: Correos[];
 }) {
   const [nombreBusqueda, setNombreBusqueda] = useState("");
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto>();
   const [cantidad, setCantidad] = useState(0);
   const [productosAgregados, setProductosAgregados] = useState<Producto[]>([]);
   const [total, setTotal] = useState(0);
+  const [clienteID, setClienteID] = useState<string>();
+  const [correoCliente, setCorreoCliente] = useState<string>();
+  const { supabase, session } = useSupabase();
+  const [ventaRealizada, setVentaRealizada] = useState<Venta[]>();
 
+  const idVenta = ventaRealizada?.map((venta) => venta.id);
+
+  const empleadoID = session?.user?.id;
+
+  let currentDate = new Date().toJSON().slice(0, 10);
+  console.log(currentDate); // "2022-06-17"
+  console.log(clienteID);
   React.useEffect(() => {
     console.log(productoSeleccionado);
   }, [productoSeleccionado]);
+
+  useEffect(() => {
+    const encontrar = async () => {
+      const encontrado = correos.find(
+        (correo) => correo.email === correoCliente
+      );
+      setClienteID(encontrado?.id);
+    };
+    encontrar();
+    //  console.log(clienteID);
+  }, [correoCliente]);
+
+  const agregarVenta = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (clienteID != null && total != null && empleadoID != null) {
+      const { data, error } = await supabase
+        .from("venta")
+        .insert([
+          {
+            fecha_venta: currentDate,
+            id_cliente: clienteID,
+            total: total,
+            id_empleado: empleadoID,
+          },
+        ])
+        .select();
+      console.log(data);
+      !error ? setVentaRealizada(data) : console.log(error);
+    }
+  };
+
+  const handleCorreoCliente = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const correo = (e.target as HTMLInputElement).value;
+    setCorreoCliente(correo);
+    const encontrado = correos.find((correo) => correo.email === correoCliente);
+    setClienteID(encontrado?.id);
+    console.log(clienteID);
+  };
 
   function calcularTotal(productosAgregados: Producto[]) {
     let total = 0;
@@ -111,7 +171,7 @@ export default function InterfazVentas({
                   .includes(nombreBusqueda.toLowerCase())
               )
               .map((productoFiltered, index) => (
-                <tbody>
+                <tbody key={index}>
                   <tr>
                     <th>{index + 1}</th>
                     <td>{productoFiltered.nombre}</td>
@@ -144,7 +204,15 @@ export default function InterfazVentas({
                 type="email"
                 placeholder="ejemplo@email.com"
                 className="input input-bordered"
+                list="correos"
+                value={correoCliente}
+                onChange={(e) => setCorreoCliente(e.target.value)}
               />
+              <datalist id="correos">
+                {correos.map((correo, index) => (
+                  <option value={correo.email} key={index} />
+                ))}
+              </datalist>
               <span>Correo</span>
             </label>
           </div>
@@ -181,7 +249,7 @@ export default function InterfazVentas({
               </tr>
             </thead>
             {productosAgregados.map((producto, index) => (
-              <tbody>
+              <tbody key={index}>
                 <tr>
                   <th>{index + 1}</th>
                   <td>{producto.nombre}</td>
@@ -225,7 +293,9 @@ export default function InterfazVentas({
               <span>MXN</span>
             </label>
           </div>
-          <button className="btn btn-info">Finalizar Venta</button>
+          <button className="btn btn-info" onClick={agregarVenta}>
+            Finalizar Venta
+          </button>
         </div>
       </div>
     </>
