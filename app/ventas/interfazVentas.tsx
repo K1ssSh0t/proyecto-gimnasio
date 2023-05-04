@@ -29,17 +29,21 @@ export default function InterfazVentas({
   const [clienteID, setClienteID] = useState<string>();
   const [correoCliente, setCorreoCliente] = useState<string>();
   const { supabase, session } = useSupabase();
-  const [ventaRealizada, setVentaRealizada] = useState<Venta[]>();
 
-  const idVenta = ventaRealizada?.map((venta) => venta.id);
+  const [idVenta, setIdVenta] = useState<number>();
 
   const empleadoID = session?.user?.id;
 
   let currentDate = new Date().toJSON().slice(0, 10);
-  console.log(currentDate); // "2022-06-17"
-  console.log(clienteID);
+  //console.log(currentDate); // "2022-06-17"
+  //console.log(clienteID);
+
+  // console.log(ventaRealizada);
+  console.log(idVenta);
+  console.log(productosAgregados);
+
   React.useEffect(() => {
-    console.log(productoSeleccionado);
+    // console.log(productoSeleccionado);
   }, [productoSeleccionado]);
 
   useEffect(() => {
@@ -52,6 +56,28 @@ export default function InterfazVentas({
     encontrar();
     //  console.log(clienteID);
   }, [correoCliente]);
+
+  useEffect(() => {
+    const generarDetallesdeVentas = async () => {
+      productosAgregados.map(async (producto) => {
+        const { data, error } = await supabase.from("detalle_venta").insert([
+          {
+            /** @ts-ignore  */
+            cantidad: producto.cantidad,
+            /** @ts-ignore  */
+            subtotal: producto.precio_venta! * producto.cantidad,
+            id_venta: idVenta,
+            id_producto: producto.id,
+          },
+        ]);
+      });
+    };
+
+    generarDetallesdeVentas();
+    setTotal(0);
+    setProductosAgregados([]);
+    setCorreoCliente("");
+  }, [idVenta]);
 
   const agregarVenta = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -67,8 +93,7 @@ export default function InterfazVentas({
           },
         ])
         .select();
-      console.log(data);
-      !error ? setVentaRealizada(data) : console.log(error);
+      !error ? setIdVenta(data[0].id) : console.log(error);
     }
   };
 
@@ -78,7 +103,7 @@ export default function InterfazVentas({
     setCorreoCliente(correo);
     const encontrado = correos.find((correo) => correo.email === correoCliente);
     setClienteID(encontrado?.id);
-    console.log(clienteID);
+    // console.log(clienteID);
   };
 
   function calcularTotal(productosAgregados: Producto[]) {
@@ -92,7 +117,7 @@ export default function InterfazVentas({
     return total;
   }
   React.useEffect(() => {
-    console.log(productosAgregados);
+    // console.log(productosAgregados);
     setTotal(calcularTotal(productosAgregados));
   }, [productosAgregados]);
 
