@@ -178,7 +178,7 @@ export default function InterfazVentas({
           </div>
         </div>
       </div>
-      <div className=" grid grid-cols-1 gap-4 mt-12 lg:grid-cols-3">
+      <div className=" grid grid-cols-1 gap-4 mt-12 lg:grid-cols-3 mx-4">
         <div className=" flex flex-col w-full items-center justify-start overflow-x-auto border-solid border-2 border-sky-500  aspect-square">
           <table className="table table-zebra w-full">
             <thead>

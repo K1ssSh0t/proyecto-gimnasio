@@ -85,6 +85,9 @@ export default function NavigationMenu() {
             <li>
               <Link href="/trabajadores">Trabajadores</Link>
             </li>
+            <li>
+              <Link href="/ingreso">Ingreso</Link>
+            </li>
           </ul>
         </div>
         <Link href="/" className="btn btn-ghost normal-case text-xl">
@@ -103,6 +106,9 @@ export default function NavigationMenu() {
           </li>
           <li className=" text-xl ">
             <Link href="/trabajadores">Trabajadores</Link>
+          </li>
+          <li className=" text-xl ">
+            <Link href="/ingreso">Ingreso</Link>
           </li>
         </ul>
       </div>
