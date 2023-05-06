@@ -4,6 +4,7 @@ import { Database } from "@/types/supabase";
 import { useEffect, useState } from "react";
 import { DescribcionProductos } from "./descripcionProductos";
 import { useSupabase } from "../../components/supabase-provider";
+import { useRouter } from "next/navigation";
 
 type Producto = Database["public"]["Tables"]["producto"]["Row"];
 
@@ -29,6 +30,8 @@ export default function InterfazVentas({
   const [clienteID, setClienteID] = useState<string>();
   const [correoCliente, setCorreoCliente] = useState<string>();
   const { supabase, session } = useSupabase();
+
+  const router = useRouter();
 
   const [idVenta, setIdVenta] = useState<number>();
 
@@ -77,6 +80,7 @@ export default function InterfazVentas({
     setTotal(0);
     setProductosAgregados([]);
     setCorreoCliente("");
+    router.refresh();
   }, [idVenta]);
 
   const agregarVenta = async (e: React.SyntheticEvent) => {

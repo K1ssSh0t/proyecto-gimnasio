@@ -22,6 +22,9 @@ export default async function SalesModule() {
   const Productos = await getProductosNombre(supabase);
 
   const correos = await getClientes(supabase);
+  // TODO: AGREGAR DESCUENTOS
+  // TODO: AGREGAR ELIMINACION DE CANTIDAD EN UN PRODUCTO COMPRADO
+  // TODO: AGREGAR REPORTES DE VENTAS
 
   return (
     <div className="container mx-auto">
