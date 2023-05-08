@@ -30,6 +30,8 @@ export default function InterfazVentas({
   const [clienteID, setClienteID] = useState<string>();
   const [correoCliente, setCorreoCliente] = useState<string>();
   const { supabase, session } = useSupabase();
+  const [descuento, setDescuento] = useState(0);
+  const [totalDescuento, setTotalDescuento] = useState(0);
 
   const router = useRouter();
 
@@ -38,12 +40,24 @@ export default function InterfazVentas({
   const empleadoID = session?.user?.id;
 
   let currentDate = new Date().toJSON().slice(0, 10);
+
+  const calcularDescuento = async () => {
+    let totalDescuento = (total * descuento) / 100;
+
+    return total - totalDescuento;
+  };
+
+  useEffect(() => {
+    let totalDescuento = (total * descuento) / 100;
+    setTotalDescuento(total - totalDescuento);
+  }, [descuento]);
+
   //console.log(currentDate); // "2022-06-17"
   //console.log(clienteID);
 
   // console.log(ventaRealizada);
-  console.log(idVenta);
-  console.log(productosAgregados);
+
+  console.log(totalDescuento);
 
   React.useEffect(() => {
     // console.log(productoSeleccionado);
@@ -63,14 +77,15 @@ export default function InterfazVentas({
   useEffect(() => {
     const generarDetallesdeVentas = async () => {
       productosAgregados.map(async (producto) => {
+        /** @ts-ignore  */
+        let subtotal = producto.precio_venta * producto.cantidad;
         const { data, error } = await supabase.from("detalle_venta").insert([
           {
             /** @ts-ignore  */
-            cantidad: producto.cantidad,
-            /** @ts-ignore  */
-            subtotal: producto.precio_venta! * producto.cantidad,
-            id_venta: idVenta,
-            id_producto: producto.id,
+            cantidad: producto.cantidad as number,
+            subtotal: subtotal as number,
+            id_venta: idVenta as number,
+            id_producto: producto.id as number,
           },
         ]);
       });
@@ -85,14 +100,16 @@ export default function InterfazVentas({
 
   const agregarVenta = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (clienteID != null && total != null && empleadoID != null) {
+
+    // const totalFinal = await calcularDescuento();
+    if (clienteID != undefined && total != 0 && empleadoID != undefined) {
       const { data, error } = await supabase
         .from("venta")
         .insert([
           {
             fecha_venta: currentDate,
             id_cliente: clienteID,
-            total: total,
+            total: totalDescuento,
             id_empleado: empleadoID,
           },
         ])
@@ -309,6 +326,21 @@ export default function InterfazVentas({
       <div className=" flex flex-row justify-center lg:justify-end items-center mt-4 ">
         <div className="flex flex-col w-2/4  lg:w-96 lg:mr-16 gap-4">
           <div className="form-control">
+            <div className="input-group mb-4">
+              <span>Descuento</span>
+              <select
+                className="select select-bordered"
+                onChange={(e) => setDescuento(parseInt(e.target.value))}
+                defaultValue={0}
+              >
+                <option value={0} selected>
+                  Sin Descuento
+                </option>
+                <option value={10}>20%</option>
+                <option value={20}>30%</option>
+              </select>
+              <span>Total con descuento {totalDescuento}</span>
+            </div>
             <label className="input-group">
               <span>Total</span>
               <input
