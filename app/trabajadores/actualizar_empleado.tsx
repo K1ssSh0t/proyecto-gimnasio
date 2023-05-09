@@ -87,7 +87,7 @@ export function ActualizarEmpleado({ empleado }: Props) {
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             &#8203;
             <div
-              className="inline-block align-middle max-w-xs w-full bg-zinc-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              className="inline-block align-middle max-w-xs w-full  bg-accent-focus rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
@@ -117,108 +117,82 @@ export function ActualizarEmpleado({ empleado }: Props) {
                     onSubmit={actualizarEmpleado}
                     className=" lg:flex lg:flex-col w-full lg:max-w-3xl "
                   >
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-name"
-                      >
-                        Nombre
+                    <div className="form-control w-full">
+                      <label className="label">
+                        <span className="label-text">Nombre</span>
                       </label>
+
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-name"
+                        className="input input-bordered w-full"
+                        id="empleado-nombre"
                         type="text"
-                        name="name"
+                        name="nombre"
                         value={empleadoNombre as string}
                         onChange={(event) =>
                           setEmpleadoNombre(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-description"
-                      >
-                        Apellido Paterno
+                      <label className="label">
+                        <span className="label-text">Apellido Paterno</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-description"
-                        name="description"
+                        className="input input-bordered w-full"
+                        id="apellido-paterno"
+                        name="apellido_p"
                         type="text"
                         value={empleadoApellidoP as string}
                         onChange={(event) =>
                           setEmpleadoApellidoP(event.target.value)
                         }
                       ></input>
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-price"
-                      >
-                        Apellido Materno
+                      <label className="label">
+                        <span className="label-text">Apellido Materno</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-price"
+                        className="input input-bordered w-full"
+                        id="apellido-materno"
                         type="text"
-                        name="price"
+                        name="apellido_m"
                         value={empleadoApellidoM as string}
                         onChange={(event) =>
                           setEmpleadoApellidoM(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-price"
-                      >
-                        Telefono
+
+                      <label className="label">
+                        <span className="label-text">Telefono</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-price"
+                        className="input input-bordered w-full"
+                        id="telefono"
                         type="tel"
-                        name="price"
+                        name="telefono"
                         value={empleadoTelefono as string}
                         onChange={(event) =>
                           setEmpleadoTelefono(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block font-bold mb-2"
-                        htmlFor="product-quantity"
-                      >
-                        Correo Electronico
+                      <label className="label">
+                        <span className="label-text">Correo Electronico</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-quantity"
+                        className="input input-bordered w-full"
+                        id="correo-electronico"
                         type="email"
-                        name="quantity"
+                        name="correo_electronico"
                         value={empleadoEmail as string}
                         onChange={(event) =>
                           setEmpleadoEmail(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block font-bold mb-2"
-                        htmlFor="product-quantity"
-                      >
-                        Puesto
+                      <label className="label">
+                        <span className="label-text">Puesto</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-quantity"
+                        className="input input-bordered w-full"
+                        id="puesto"
                         type="text"
-                        name="quantity"
+                        name="puesto"
                         value={empleadoTipoEmpleado as string}
                         onChange={(event) =>
                           setEmpleadoTipoEmpleado(event.target.value)
@@ -233,31 +207,27 @@ export function ActualizarEmpleado({ empleado }: Props) {
                           // TODO: Agregar puestos a la lista
                         }
                       </datalist>
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block font-bold mb-2"
-                        htmlFor="product-quantity"
-                      >
-                        Direccion
+                      <label className="label">
+                        <span className="label-text">Dirección</span>
                       </label>
+
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-quantity"
+                        className="input input-bordered w-full"
+                        id="direccion"
                         type="text"
-                        name="quantity"
+                        name="direcion"
                         value={empleadoDireccion as string}
                         onChange={(event) =>
                           setEmpleadoDireccion(event.target.value)
                         }
                       />
                     </div>
-                    <div className=" flex justify-center">
+                    <div className=" flex justify-center mt-4">
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
                         type="submit"
                       >
-                        Actualizar Empleado
+                        Actualizar
                       </button>
                     </div>
                   </form>

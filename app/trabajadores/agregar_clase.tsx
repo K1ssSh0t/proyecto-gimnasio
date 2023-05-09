@@ -77,7 +77,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             &#8203;
             <div
-              className="inline-block align-middle max-w-xs w-full bg-zinc-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              className="inline-block align-middle max-w-xs w-full bg-accent-focus rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
@@ -107,108 +107,80 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                     onSubmit={agregarClase}
                     className=" lg:flex lg:flex-col w-full lg:max-w-3xl "
                   >
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-name"
-                      >
-                        Descripcion
+                    <div className="form-control w-full">
+                      <label className="label">
+                        <span className="label-text">Descripcion</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-name"
+                        className="input input-bordered w-full"
+                        id="descripcion"
                         type="text"
-                        name="name"
+                        name="descripcion"
                         value={claseDescripcion as string}
                         onChange={(event) =>
                           setClaseDescripcion(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-description"
-                      >
-                        Fechas de Inicio
+                      <label className="label">
+                        <span className="label-text">Fecha de Inicio</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-description"
-                        name="description"
+                        className="input input-bordered w-full"
+                        id="fecha_inicio"
+                        name="fecha_inicio"
                         type="date"
                         value={claseFechaInicio as string}
                         onChange={(event) =>
                           setClaseFechaInicio(event.target.value)
                         }
                       ></input>
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-price"
-                      >
-                        Fecha de Fin
+                      <label className="label">
+                        <span className="label-text">Fecha de Fin</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-price"
+                        className="input input-bordered w-full"
+                        id="fecha_fin"
                         type="date"
-                        name="price"
+                        name="fecha_fin"
                         value={claseFechaFin as string}
                         onChange={(event) =>
                           setClaseFechaFin(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-price"
-                      >
-                        Hora de Inicio
+                      <label className="label">
+                        <span className="label-text">Hora de Inicio</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-price"
+                        className="input input-bordered w-full"
+                        id="hora_inicio"
                         type="time"
-                        name="price"
+                        name="hora_inicio"
                         value={claseHoraInicio as string}
                         onChange={(event) =>
                           setClaseHoraInicio(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block font-bold mb-2"
-                        htmlFor="product-quantity"
-                      >
-                        Hora de Fin
+                      <label className="label">
+                        <span className="label-text">Hora de Fin</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-quantity"
+                        className="input input-bordered w-full"
+                        id="hora_fin"
                         type="time"
-                        name="quantity"
+                        name="hora_fin"
                         value={claseHoraFin as string}
                         onChange={(event) =>
                           setClaseHoraFin(event.target.value)
                         }
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block font-bold mb-2"
-                        htmlFor="product-quantity"
-                      >
-                        Id Empleado
+                      <label className="label">
+                        <span className="label-text">Id Empleado</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-quantity"
+                        className="input input-bordered w-full"
+                        id="id_empleado"
                         type="text"
-                        name="quantity"
+                        name="id_empleado"
                         value={claseEmpleado as string}
                         onChange={(event) =>
                           setClaseEmpleado(event.target.value)

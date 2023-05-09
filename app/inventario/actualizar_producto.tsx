@@ -31,6 +31,10 @@ export function Modal({ producto }: { producto: Producto }) {
     Producto["inventario_actual"] | string
   >(producto.inventario_actual);
 
+  const [productoNombre, setProductoNombre] = useState<Producto["nombre"]>(
+    producto.nombre
+  );
+
   function openModal() {
     setIsOpen(true);
   }
@@ -50,6 +54,7 @@ export function Modal({ producto }: { producto: Producto }) {
         feche_caducidad: productoCaducidad,
         costo: productoCosto as number,
         precio_venta: productoPrecio as number,
+        nombre: productoNombre,
       })
       .eq("id", producto.id);
 
@@ -70,7 +75,7 @@ export function Modal({ producto }: { producto: Producto }) {
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             &#8203;
             <div
-              className="inline-block align-middle max-w-xs w-full bg-zinc-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              className="inline-block align-middle max-w-xs w-full bg-accent-focus file:rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
@@ -100,33 +105,43 @@ export function Modal({ producto }: { producto: Producto }) {
                     onSubmit={actualizarProducto}
                     className=" lg:flex lg:flex-col w-full lg:max-w-3xl "
                   >
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-name"
-                      >
-                        Producto Inicial
+                    <div className="form-control w-full">
+                      <label className="label">
+                        <span className="label-text">Nombre</span>
                       </label>
+
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-name"
+                        className="input input-bordered w-full "
+                        id="producto-nombre"
+                        type="text"
+                        name="producto-nombre"
+                        value={productoNombre as string}
+                        onChange={(event) =>
+                          setProductoNombre(event.target.value)
+                        }
+                        required
+                      />
+                      <label className="label">
+                        <span className="label-text">Producto Inicial</span>
+                      </label>
+
+                      <input
+                        className="input input-bordered w-full "
+                        id="producto-inicial"
                         type="number"
-                        name="name"
+                        name="producto-inicial"
                         value={productoInicial as number}
                         onChange={(event) =>
                           setProductoInicial(event.target.value)
                         }
+                        required
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-description"
-                      >
-                        Product caducidad
+
+                      <label className="label">
+                        <span className="label-text">Caducidad</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                        className="input input-bordered w-full "
                         id="product-description"
                         name="description"
                         type="date"
@@ -134,55 +149,43 @@ export function Modal({ producto }: { producto: Producto }) {
                         onChange={(event) =>
                           setProductoCaducidad(event.target.value)
                         }
+                        required
                       ></input>
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-price"
-                      >
-                        Product Costo
+                      <label className="label">
+                        <span className="label-text">Costo</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-price"
+                        className="input input-bordered w-full "
+                        id="product-costo"
                         type="number"
                         step="0.01"
-                        name="price"
+                        name="costo"
                         value={productoCosto as number}
                         onChange={(event) =>
                           setProductoCosto(event.target.value)
                         }
+                        required
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block  font-bold mb-2"
-                        htmlFor="product-price"
-                      >
-                        Product Price
+                      <label className="label">
+                        <span className="label-text">Precio</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-                        id="product-price"
+                        className="input input-bordered w-full"
+                        id="producto-precio"
                         type="number"
                         step="0.01"
-                        name="price"
+                        name="precio"
                         value={productoPrecio as number}
                         onChange={(event) =>
                           setProductoPrcio(event.target.value)
                         }
+                        required
                       />
-                    </div>
-                    <div className="mb-4 w-full">
-                      <label
-                        className="block font-bold mb-2"
-                        htmlFor="product-quantity"
-                      >
-                        Product Quantity
+                      <label className="label">
+                        <span className="label-text">Cantidad</span>
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                        className="input input-bordered w-full"
                         id="product-quantity"
                         type="number"
                         name="quantity"
@@ -190,9 +193,10 @@ export function Modal({ producto }: { producto: Producto }) {
                         onChange={(event) =>
                           setProductoActual(event.target.value)
                         }
+                        required
                       />
                     </div>
-                    <div className=" flex justify-center">
+                    <div className=" flex justify-center mt-4">
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
                         type="submit"

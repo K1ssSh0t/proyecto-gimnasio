@@ -39,6 +39,7 @@ const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
           <ActualizarClase
             clase={clase}
             listaIdsEmpleados={listaIdsEmpleados}
+            key={clase.id}
           />
         </td>
       </tr>

@@ -35,7 +35,7 @@ export default function EmpleadosLista({
         <td className="">{empleado.tipo_empleado}</td>
         <td className="">{empleado.direccion}</td>
         <td className=" flex space-x-4 justify-center">
-          <ActualizarEmpleado empleado={empleado} />
+          <ActualizarEmpleado empleado={empleado} key={empleado.id} />
         </td>
       </tr>
     ));

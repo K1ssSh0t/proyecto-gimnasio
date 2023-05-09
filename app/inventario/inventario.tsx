@@ -23,13 +23,13 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
     .map((producto, index) => (
       <tr key={index}>
         <td className="">{index + 1}</td>
-        <td className="">{producto.id}</td>
+        <td className="">{producto.nombre}</td>
         <td className="">{producto.costo}</td>
         <td className="">{producto.precio_venta}</td>
         <td className="">{producto.inventario_actual}</td>
         <td className=" flex space-x-4 justify-center">
           <BorrarProducto producto={producto} />
-          <Modal producto={producto} />
+          <Modal producto={producto} key={producto.id} />
         </td>
       </tr>
     ));
@@ -57,6 +57,10 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   const [productoActual, setProductoActual] = useState<
     Producto["inventario_actual"] | string
+  >();
+
+  const [productoNombre, setProductoNombre] = useState<
+    Producto["nombre"] | string
   >();
 
   useEffect(() => {
@@ -109,6 +113,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
       feche_caducidad: productoCaducidad,
       inventario_incial: productoInicial as number,
       inventario_actual: productoActual,
+      nombre: productoNombre,
     });
 
     console.log(error);
@@ -119,33 +124,42 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
       <h1 className="text-3xl font-bold mb-6">Módulo de Inventario</h1>
       <div className=" flex justify-center ">
         <form
-          // TODO: Agregar mejores estilos a los formularios y required
           onSubmit={handleSummit}
           className=" lg:flex lg:flex-col w-full lg:max-w-3xl "
         >
-          <div className="mb-4 w-full">
-            <label className="block  font-bold mb-2" htmlFor="producto-incial">
-              Producto Inicial
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Nombre</span>
             </label>
+
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="input input-bordered w-full "
+              id="producto-nombre"
+              type="text"
+              name="producto-nombre"
+              value={productoNombre as string}
+              onChange={(event) => setProductoNombre(event.target.value)}
+              required
+            />
+            <label className="label">
+              <span className="label-text">Producto Inicial</span>
+            </label>
+
+            <input
+              className="input input-bordered w-full "
               id="producto-inicial"
               type="number"
-              name="name"
+              name="producto-inicial"
               value={productoInicial as number}
               onChange={(event) => setProductoInicial(event.target.value)}
               required
             />
-          </div>
-          <div className="mb-4 w-full">
-            <label
-              className="block  font-bold mb-2"
-              htmlFor="product-description"
-            >
-              Caducidad
+
+            <label className="label">
+              <span className="label-text">Caducidad</span>
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+              className="input input-bordered w-full "
               id="product-description"
               name="description"
               type="date"
@@ -153,43 +167,37 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               onChange={(event) => setProductoCaducidad(event.target.value)}
               required
             ></input>
-          </div>
-          <div className="mb-4 w-full">
-            <label className="block  font-bold mb-2" htmlFor="product-price">
-              Costo
+            <label className="label">
+              <span className="label-text">Costo</span>
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-              id="product-price"
+              className="input input-bordered w-full "
+              id="product-costo"
               type="number"
               step="0.01"
-              name="price"
+              name="costo"
               value={productoCosto as number}
               onChange={(event) => setProductoCosto(event.target.value)}
               required
             />
-          </div>
-          <div className="mb-4 w-full">
-            <label className="block  font-bold mb-2" htmlFor="product-price">
-              Precio
+            <label className="label">
+              <span className="label-text">Precio</span>
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-              id="product-price"
+              className="input input-bordered w-full"
+              id="producto-precio"
               type="number"
               step="0.01"
-              name="price"
+              name="precio"
               value={productoPrecio as number}
               onChange={(event) => setProductoPrcio(event.target.value)}
               required
             />
-          </div>
-          <div className="mb-4 w-full">
-            <label className="block font-bold mb-2" htmlFor="product-quantity">
-              Cantidad
+            <label className="label">
+              <span className="label-text">Cantidad</span>
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="input input-bordered w-full"
               id="product-quantity"
               type="number"
               name="quantity"
@@ -198,7 +206,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               required
             />
           </div>
-          <div className=" flex justify-center">
+          <div className=" flex justify-center mt-4">
             <button className="btn btn-info" type="submit">
               Agregar Producto
             </button>
@@ -211,7 +219,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
           <thead>
             <tr className=" text-center [&>th]:capitalize [&>th]:text-lg ">
               <th style={{ position: "unset" }}>Product ID</th>
-              <th className=" ">index</th>
+              <th className=" ">Nombre</th>
               <th className=" ">Costo</th>
               <th className=" ">Precio Venta</th>
               <th className=" ">Inventario Actual</th>
