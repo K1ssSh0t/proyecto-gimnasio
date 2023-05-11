@@ -27,7 +27,8 @@ export async function middleware(req: NextRequest) {
       req.nextUrl.pathname.startsWith("/inventario") ||
       req.nextUrl.pathname.startsWith("/trabajadores") ||
       req.nextUrl.pathname.startsWith("/ventas") ||
-      req.nextUrl.pathname.startsWith("/ingreso")
+      req.nextUrl.pathname.startsWith("/ingreso") ||
+      req.nextUrl.pathname.startsWith("/reportes")
     ) {
       return true;
     }

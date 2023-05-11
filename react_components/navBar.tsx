@@ -68,6 +68,9 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
                 <li>
                   <Link href="/ingreso">Registro</Link>
                 </li>
+                <li>
+                  <Link href="/reportes">Reportes</Link>
+                </li>
               </ul>
             ) : (
               <ul className="menu menu-horizontal">
@@ -99,6 +102,9 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
             </li>
             <li>
               <Link href="/ingreso">Registro</Link>
+            </li>
+            <li>
+              <Link href="/reportes">Reportes</Link>
             </li>
           </ul>
         ) : (
