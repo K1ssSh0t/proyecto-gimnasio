@@ -1,162 +1,116 @@
-"use client";
-
 import Link from "next/link";
 import LogOut from "./logout";
-import { useSupabase } from "../components/supabase-provider";
-import { useEffect, useState } from "react";
 
-export default function NavigationMenu() {
-  const { supabase, session } = useSupabase();
+import { createServerClient } from "../utils/supabase-server";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+const verificarUsuairio = async (supabase: any, userId: string | undefined) => {
+  let { data, error } = await supabase.rpc("es_empleado", {
+    employee_id: userId,
+  });
+
+  return data;
+};
+
+async function NavigationMenu({ children }: { children: React.ReactNode }) {
+  const supabase = createServerClient();
+
+  const { data, error } = await supabase.auth.getSession();
+
+  const session = data?.session;
+
   const userId = session?.user.id;
-  const [esEmpleado, setEsEmpleado] = useState<boolean | null>();
+  const esEmpleado = await verificarUsuairio(supabase, userId);
 
-  const verificarUsuairio = async () => {
-    let { data, error } = await supabase.rpc("es_empleado", {
-      employee_id: userId,
-    });
-
-    setEsEmpleado(data);
-  };
-
-  useEffect(() => {
-    verificarUsuairio();
-  }, []);
-
-  return !session ? (
-    <div className="navbar bg-base-300">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </label>
+  return (
+    <div className="drawer">
+      <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content flex flex-col">
+        <div className="w-full navbar bg-base-300">
+          <div className="flex-none lg:hidden">
+            <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="inline-block w-6 h-6 stroke-current"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+            </label>
+          </div>
+          <div className="flex-1 px-2 mx-2">
+            {" "}
+            <Link href="/" className="btn btn-ghost normal-case text-xl">
+              Inicio
+            </Link>
+          </div>
+          <div className="flex-none hidden lg:block">
+            {!session ? null : esEmpleado ? (
+              <ul className="menu menu-horizontal">
+                <li>
+                  <Link href="/ventas">Ventas</Link>
+                </li>
+                <li>
+                  <Link href="/inventario">Inventario</Link>
+                </li>
+                <li>
+                  <Link href="/trabajadores">Empleados</Link>
+                </li>
+                <li>
+                  <Link href="/ingreso">Registro</Link>
+                </li>
+              </ul>
+            ) : (
+              <ul className="menu menu-horizontal">
+                <li className=" ">
+                  <Link href="/clientes">Mis Datos</Link>
+                </li>
+              </ul>
+            )}
+          </div>
+          {!session ? null : <LogOut />}
         </div>
-        <Link href="/" className="btn btn-ghost normal-case text-xl">
-          Inicio
-        </Link>
+
+        {children}
       </div>
-      <div className="navbar-center hidden lg:flex"></div>
-      <div className="navbar-end"></div>
-    </div>
-  ) : esEmpleado ? (
-    <div className="navbar bg-base-300">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-300 rounded-box w-52"
-          >
+      <div className="drawer-side">
+        <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
+        {!session ? (
+          <ul className="menu p-4 w-80 bg-base-100"></ul>
+        ) : esEmpleado ? (
+          <ul className="menu p-4 w-80 bg-base-100">
             <li>
               <Link href="/ventas">Ventas</Link>
             </li>
             <li>
-              <Link href="/inventario" className="justify-between">
-                Inventario
-              </Link>
+              <Link href="/inventario">Inventario</Link>
             </li>
             <li>
-              <Link href="/trabajadores">Trabajadores</Link>
+              <Link href="/trabajadores">Empleados</Link>
             </li>
             <li>
-              <Link href="/ingreso">Ingreso</Link>
+              <Link href="/ingreso">Registro</Link>
             </li>
           </ul>
-        </div>
-        <Link href="/" className="btn btn-ghost normal-case text-xl">
-          Inicio
-        </Link>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li className=" text-xl">
-            <Link href="/ventas">Ventas</Link>
-          </li>
-          <li className=" text-xl">
-            <Link href="/inventario" className="justify-between">
-              Inventario
-            </Link>
-          </li>
-          <li className=" text-xl ">
-            <Link href="/trabajadores">Trabajadores</Link>
-          </li>
-          <li className=" text-xl ">
-            <Link href="/ingreso">Ingreso</Link>
-          </li>
-        </ul>
-      </div>
-      <div className="navbar-end"></div>
-      <LogOut />
-    </div>
-  ) : (
-    <div className="navbar bg-base-300">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-300 rounded-box w-52"
-          >
-            <li>
+        ) : (
+          <ul className="menu p-4 w-80 bg-base-100">
+            <li className=" ">
               <Link href="/clientes">Mis Datos</Link>
             </li>
           </ul>
-        </div>
-        <Link href="/" className="btn btn-ghost normal-case text-xl">
-          Inicio
-        </Link>
+        )}
       </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li className=" text-xl">
-            <Link href="/clientes">Mis Datos</Link>
-          </li>
-        </ul>
-      </div>
-      <div className="navbar-end"></div>
-      <LogOut />
     </div>
   );
 }
+
+export default NavigationMenu as unknown as (props: Props) => JSX.Element;
