@@ -22,7 +22,6 @@ export default async function SalesModule() {
   const Productos = await getProductosNombre(supabase);
 
   const correos = await getClientes(supabase);
-  // TODO: AGREGAR REPORTES DE VENTAS
 
   return (
     <div className="container mx-auto">

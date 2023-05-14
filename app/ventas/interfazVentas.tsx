@@ -47,22 +47,17 @@ export default function InterfazVentas({
     return total - totalDescuento;
   };
 
+  // Funcion que calcula el descuento sobre el total de la venta, si se ha seleccionado un descuento
   useEffect(() => {
     let totalDescuento = (total * descuento) / 100;
     setTotalDescuento(total - totalDescuento);
   }, [descuento]);
 
-  //console.log(currentDate); // "2022-06-17"
-  //console.log(clienteID);
-
-  // console.log(ventaRealizada);
-
-  console.log(totalDescuento);
-
   React.useEffect(() => {
     // console.log(productoSeleccionado);
   }, [productoSeleccionado]);
 
+  //Funcion que saca el id del cliente segun el correo seleccionado
   useEffect(() => {
     const encontrar = async () => {
       const encontrado = correos.find(
@@ -74,6 +69,7 @@ export default function InterfazVentas({
     //  console.log(clienteID);
   }, [correoCliente]);
 
+  // Funcion que genera los detalles de venta cuando se ha creado una nueva venta
   useEffect(() => {
     const generarDetallesdeVentas = async () => {
       productosAgregados.map(async (producto) => {
@@ -98,10 +94,11 @@ export default function InterfazVentas({
     router.refresh();
   }, [idVenta]);
 
+  // Funcion que genera la venta en la base de datos
+  // y asigna el id de la venta a la variable idVenta para que se pueda generar los detalles de la venta
   const agregarVenta = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    // const totalFinal = await calcularDescuento();
     if (clienteID != undefined && total != 0 && empleadoID != undefined) {
       const { data, error } = await supabase
         .from("venta")
@@ -124,9 +121,9 @@ export default function InterfazVentas({
     setCorreoCliente(correo);
     const encontrado = correos.find((correo) => correo.email === correoCliente);
     setClienteID(encontrado?.id);
-    // console.log(clienteID);
   };
 
+  // Funcion que calcula el total
   function calcularTotal(productosAgregados: Producto[]) {
     let total = 0;
 
@@ -137,11 +134,15 @@ export default function InterfazVentas({
 
     return total;
   }
+
+  // Funcion que calcula el total cada vez que se agrega un producto a la lista de productos agregados
   React.useEffect(() => {
-    // console.log(productosAgregados);
     setTotal(calcularTotal(productosAgregados));
   }, [productosAgregados]);
 
+  // Funcion que se encarga de agregar un producto a la lista de productos agregados
+  // asegurandose que hay un producto seleccionado y que la cantidad es mayor a 0
+  // y que si el producto ya se encuentra agregado la suma la cantidad que selecciono
   const handleArgregarProducto = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (productoSeleccionado != null && cantidad > 0) {
@@ -336,8 +337,8 @@ export default function InterfazVentas({
                 <option value={0} selected>
                   Sin Descuento
                 </option>
-                <option value={10}>20%</option>
-                <option value={20}>30%</option>
+                <option value={10}>10%</option>
+                <option value={20}>20%</option>
               </select>
               <span>Total con descuento {totalDescuento}</span>
             </div>
