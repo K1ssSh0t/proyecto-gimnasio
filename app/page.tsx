@@ -1,4 +1,3 @@
-import Login from "@/react_components/login";
 import { createServerClient } from "../utils/supabase-server";
 import { Membresias } from "./membresiasDatos";
 import { Clases } from "./clasesDatos";
@@ -24,7 +23,6 @@ export default async function Home() {
   return (
     <main>
       <div className=" text-lg text-center flex flex-col w-full ">
-        <Login></Login>
         <Membresias membresias={membresias} />
         <div className="divider w-4/5 self-center"></div>
         <Clases clases={clases} />

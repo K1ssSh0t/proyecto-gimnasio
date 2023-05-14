@@ -42,6 +42,13 @@ export async function middleware(req: NextRequest) {
     return false;
   };
 
+  const checarrutaLogin = () => {
+    if (req.nextUrl.pathname.startsWith("/login")) {
+      return true;
+    }
+    return false;
+  };
+
   if (data != true && checarrutaAdmin()) {
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/";
@@ -58,6 +65,12 @@ export async function middleware(req: NextRequest) {
     return res;
   }
   if (data && checarrutaCliente()) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/";
+    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
+  if (session && checarrutaLogin()) {
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/";
     redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);

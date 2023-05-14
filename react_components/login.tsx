@@ -22,12 +22,12 @@ export default function Login() {
   const router = useRouter();
   /*
   useEffect(() => {
-    if (!session) {
-      router.refresh();
+    if (session) {
+      router.push("/");
       // window.location.reload();
     }
-  }, [session]);*/
-
+  }, [session]);
+*/
   return session ? (
     <></>
   ) : (

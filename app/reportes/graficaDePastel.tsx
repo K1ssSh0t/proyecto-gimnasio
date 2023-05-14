@@ -45,6 +45,7 @@ export default function Grafica({
   console.log(nombres);
   const totalProductos = calcularTotalProductos(productosVendidos);
   console.log(totalProductos);
+  // TODO: Arreglar el totalProductos
 
   const data = {
     labels: nombres,

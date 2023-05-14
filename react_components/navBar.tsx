@@ -80,7 +80,13 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
               </ul>
             )}
           </div>
-          {!session ? null : <LogOut />}
+          {!session ? (
+            <Link href="/login" className="btn btn-ghost normal-case text-xl">
+              Iniciar Sesion
+            </Link>
+          ) : (
+            <LogOut />
+          )}
         </div>
 
         {children}
