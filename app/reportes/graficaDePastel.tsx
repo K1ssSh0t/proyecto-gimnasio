@@ -9,31 +9,30 @@ type Productos = Database["public"]["Tables"]["producto"]["Row"];
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function calcularTotalProductos(detalleVenta: Detalle_Venta[]): number[] {
-  const totalProductos: { [id: number]: number } = {};
+function obtenerTotalVentasPorProducto(
+  detalleVentas: Detalle_Venta[],
+  productos: Productos[]
+): number[] {
+  const totalVentas: number[] = [];
 
-  for (const detalle of detalleVenta) {
-    if (detalle.id_producto !== null) {
-      if (detalle.id_producto in totalProductos) {
-        totalProductos[detalle.id_producto]++;
-      } else {
-        totalProductos[detalle.id_producto] = 1;
-      }
+  // Inicializar el arreglo con ceros para cada producto
+  for (const producto of productos) {
+    totalVentas[producto.id] = 0;
+  }
+
+  // Calcular el total de ventas por producto
+  for (const detalleVenta of detalleVentas) {
+    if (detalleVenta.id_producto !== null) {
+      totalVentas[detalleVenta.id_producto] += 1;
     }
   }
 
-  const sortedIds = Object.keys(totalProductos)
-    .map(Number)
-    .sort((a, b) => a - b);
-
-  const resultados: number[] = [];
-
-  for (const id of sortedIds) {
-    resultados.push(totalProductos[id] || 0);
-  }
-
-  return resultados;
+  // Eliminar elementos vacíos y convertir a números
+  return totalVentas
+    .filter((item) => item !== undefined && item !== null)
+    .map(Number);
 }
+
 export default function Grafica({
   productosVendidos,
   productos,
@@ -42,17 +41,17 @@ export default function Grafica({
   productos: Productos[];
 }) {
   const nombres = productos.map((producto) => producto.nombre);
-  console.log(nombres);
-  const totalProductos = calcularTotalProductos(productosVendidos);
-  console.log(totalProductos);
-  // TODO: Arreglar el totalProductos
+  const totalProductos = obtenerTotalVentasPorProducto(
+    productosVendidos,
+    productos
+  );
 
   const data = {
     labels: nombres,
     datasets: [
       {
-        label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        label: "Cantidad de ventas",
+        data: totalProductos,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -76,7 +75,7 @@ export default function Grafica({
   return (
     <div>
       {" "}
-      <Doughnut data={data} />;
+      <Doughnut data={data} />
     </div>
   );
 }
