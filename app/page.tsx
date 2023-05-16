@@ -2,6 +2,8 @@ import { createServerClient } from "../utils/supabase-server";
 import { Membresias } from "./membresiasDatos";
 import { Clases } from "./clasesDatos";
 
+export const revalidate = 0;
+
 async function getMembresias(supabase: any) {
   let { data: tipo_membresia, error } = await supabase
     .from("tipo_membresia")

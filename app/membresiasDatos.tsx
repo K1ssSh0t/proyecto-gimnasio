@@ -1,9 +1,20 @@
 import * as React from "react";
 import { Database } from "@/types/supabase";
+import { loadStripe } from "@stripe/stripe-js";
+import { createServerClient } from "@/utils/supabase-server";
+import { MembresiaButton } from "./buton_membresia";
 
 type Membresias = Database["public"]["Tables"]["tipo_membresia"]["Row"];
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+/*const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
+*/
 export function Membresias({ membresias }: { membresias: Membresias[] }) {
+  const supabase = createServerClient();
+
   return (
     <div className=" flex flex-col items-center justify-center min-h-screen py-2">
       <div className="hero min-h-screen bg-base-200">
@@ -25,10 +36,9 @@ export function Membresias({ membresias }: { membresias: Membresias[] }) {
                       <h2 className="card-title">{membresia.id}</h2>
                       <p>{membresia.descripcion}</p>
                       <div className="card-actions justify-end">
-                        <button className="btn btn-info">Inscribirse</button>
-                        {
-                          // TODO: Agregar boton para ver mas
-                        }
+                        <MembresiaButton
+                          membresia={membresia}
+                        ></MembresiaButton>
                       </div>
                     </div>
                   </div>
