@@ -20,9 +20,6 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: "subscription",
-      invoice_creation: {
-        enabled: true,
-      },
       success_url: `${req.nextUrl.origin}/clientes`,
       cancel_url: `${req.nextUrl.origin}/`,
     });

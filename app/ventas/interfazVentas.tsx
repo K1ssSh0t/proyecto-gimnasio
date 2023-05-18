@@ -32,7 +32,7 @@ export default function InterfazVentas({
   const { supabase, session } = useSupabase();
   const [descuento, setDescuento] = useState(0);
   const [totalDescuento, setTotalDescuento] = useState(0);
-
+  //  TODO: Hacer que el descuento sea de acuerdo a la memebresia del cliente
   const router = useRouter();
 
   const [idVenta, setIdVenta] = useState<number>();
@@ -48,14 +48,30 @@ export default function InterfazVentas({
   };
 
   // Funcion que calcula el descuento sobre el total de la venta, si se ha seleccionado un descuento
+
   useEffect(() => {
-    let totalDescuento = (total * descuento) / 100;
-    setTotalDescuento(total - totalDescuento);
+    let cantidadDescuento = (total * descuento) / 100;
+    //setTotalDescuento(total - totalDescuento);
+    console.log(cantidadDescuento);
+    // FIXME: Arreglar cuando no se selecciono un descuento el total es igual a cero
+
+    setTotalDescuento(total - cantidadDescuento);
+
+    console.log(totalDescuento);
   }, [descuento]);
 
   React.useEffect(() => {
-    // console.log(productoSeleccionado);
-  }, [productoSeleccionado]);
+    let cantidadDescuento = (total * descuento) / 100;
+    //setTotalDescuento(total - totalDescuento);
+    console.log(cantidadDescuento);
+    // FIXME: Arreglar cuando no se selecciono un descuento el total es igual a cero
+    if (cantidadDescuento != 0) {
+      setTotalDescuento(total - cantidadDescuento);
+    }
+    setTotalDescuento(total);
+
+    console.log(totalDescuento);
+  }, [total]);
 
   //Funcion que saca el id del cliente segun el correo seleccionado
   useEffect(() => {
@@ -331,14 +347,12 @@ export default function InterfazVentas({
               <span>Descuento</span>
               <select
                 className="select select-bordered"
-                onChange={(e) => setDescuento(parseInt(e.target.value))}
-                defaultValue={0}
+                // onChange={(e) => setDescuento(parseInt(e.target.value))}
+                /// value={descuento}
               >
-                <option value={0} selected>
-                  Sin Descuento
-                </option>
-                <option value={10}>10%</option>
-                <option value={20}>20%</option>
+                <option onClick={(e) => setDescuento(0)}>Sin Descuento</option>
+                <option onClick={(e) => setDescuento(10)}>10%</option>
+                <option onClick={(e) => setDescuento(20)}>20%</option>
               </select>
               <span>Total con descuento {totalDescuento}</span>
             </div>
