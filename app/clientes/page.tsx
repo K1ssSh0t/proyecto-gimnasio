@@ -21,7 +21,8 @@ async function getMembresia(supabase: any, userId: string | undefined) {
 const agregarMemrbreia = async (
   supabase: any,
   userId: string,
-  sessionId: string
+  sessionId: string,
+  membresia_tipo: string
 ) => {
   const session = await stripe.checkout.sessions.retrieve(sessionId);
 
@@ -35,6 +36,7 @@ const agregarMemrbreia = async (
           estado_membresia: "activa",
           fecha_activacion: currentDate,
           id_cliente: userId,
+          id_tipo_membresia: membresia_tipo,
           //TODO:Agregar tipo de membresia
         },
       ])
@@ -48,7 +50,12 @@ const agregarMemrbreia = async (
 export default async function Clientes({
   searchParams,
 }: {
-  searchParams: { session_id?: string; success?: boolean; cancelled?: boolean };
+  searchParams: {
+    session_id?: string;
+    success?: boolean;
+    cancelled?: boolean;
+    membresia_tipo?: string;
+  };
 }) {
   const supabase = createServerClient();
 
@@ -97,7 +104,14 @@ export default async function Clientes({
 
     if (!session_id) throw new Error("No se encontro session_id");
 
-    const { data } = await agregarMemrbreia(supabase, userId!, session_id);
+    const membreias_tipo = searchParams.membresia_tipo;
+
+    const { data } = await agregarMemrbreia(
+      supabase,
+      userId!,
+      session_id,
+      membreias_tipo!
+    );
 
     return (
       <main>

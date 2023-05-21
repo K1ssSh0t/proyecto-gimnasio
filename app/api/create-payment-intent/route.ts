@@ -13,6 +13,9 @@ export const revalidate = 0;
 export async function POST(req: NextRequest) {
   let data = await req.json();
   //const { amount } = data;
+
+  const { stripe_id, id } = data;
+
   console.log(data);
   const supabase = createServerClient();
 
@@ -44,12 +47,12 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          price: "price_1N8BxjEe8nszRY3zmu7d5PkD",
+          price: stripe_id,
           quantity: 1,
         },
       ],
       mode: "subscription",
-      success_url: `${req.nextUrl.origin}/clientes?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.nextUrl.origin}/clientes?success=true&session_id={CHECKOUT_SESSION_ID}&membresia_tipo=${id}`,
       cancel_url: `${req.nextUrl.origin}/clientes?canceled=true`,
       customer_email: correo_cliente,
     });
