@@ -114,8 +114,30 @@ export default function InterfazVentas({
   // y asigna el id de la venta a la variable idVenta para que se pueda generar los detalles de la venta
   const agregarVenta = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    //TODO: MODIFICAR LA CONDICION EN UNA FUNCIION
 
-    if (clienteID != undefined && total != 0 && empleadoID != undefined) {
+    const generarVenta = async () => {
+      if (clienteID != undefined && total != 0 && empleadoID != undefined) {
+        const { data, error } = await supabase
+          .from("venta")
+          .insert([
+            {
+              fecha_venta: currentDate,
+              id_cliente: clienteID,
+              total: totalDescuento,
+              id_empleado: empleadoID,
+            },
+          ])
+          .select();
+
+        return data;
+      }
+    };
+
+    const ventaGenerada = await generarVenta();
+
+    setIdVenta(ventaGenerada![0].id);
+    /* if (clienteID != undefined && total != 0 && empleadoID != undefined) {
       const { data, error } = await supabase
         .from("venta")
         .insert([
@@ -127,8 +149,12 @@ export default function InterfazVentas({
           },
         ])
         .select();
-      !error ? setIdVenta(data[0].id) : console.log(error);
-    }
+
+      if (data != null) {
+        setIdVenta(data[0].id);
+      }
+      console.log(error);
+    }*/
   };
 
   const handleCorreoCliente = (e: React.SyntheticEvent) => {

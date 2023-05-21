@@ -1,8 +1,14 @@
 import { createServerClient } from "../../utils/supabase-server";
 import { MiMembresia } from "./miMembresia";
 import MisDatos from "./misdatos";
+import Stripe from "stripe";
 
 export const revalidate = 0;
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  typescript: true,
+  apiVersion: "2022-11-15",
+});
 
 async function getMembresia(supabase: any, userId: string | undefined) {
   let { data: membresia, error } = await supabase
@@ -11,7 +17,39 @@ async function getMembresia(supabase: any, userId: string | undefined) {
     .eq("id_cliente", userId);
   return membresia[0];
 }
-export default async function Clientes() {
+
+const agregarMemrbreia = async (
+  supabase: any,
+  userId: string,
+  sessionId: string
+) => {
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  let currentDate = new Date().toJSON().slice(0, 10);
+
+  if (session && session.status == "complete") {
+    const { data, error } = await supabase
+      .from("membresia")
+      .insert([
+        {
+          estado_membresia: "activa",
+          fecha_activacion: currentDate,
+          id_cliente: userId,
+          //TODO:Agregar tipo de membresia
+        },
+      ])
+      .select()
+      .single();
+
+    return { data };
+  }
+  throw new Error("You should not be able to access this page");
+};
+export default async function Clientes({
+  searchParams,
+}: {
+  searchParams: { session_id?: string; success?: boolean; cancelled?: boolean };
+}) {
   const supabase = createServerClient();
 
   const {
@@ -29,16 +67,47 @@ export default async function Clientes() {
 
   const membresia = await getMembresia(supabase, userId);
 
-  return session ? (
-    <main>
-      <div className=" text-lg text-center flex flex-col w-full ">
-        <MisDatos cliente={cliente} />
-        <div className="divider w-4/5 self-center"></div>
+  if (searchParams.session_id == undefined) {
+    if (membresia == null) {
+      return (
+        <main>
+          <div className=" text-lg text-center flex flex-col w-full ">
+            <MisDatos cliente={cliente} />
+            <div className="divider w-4/5 self-center"></div>
 
-        <MiMembresia membresia={membresia} />
-      </div>
-    </main>
-  ) : (
-    <div></div>
-  );
+            <h3>No tienes una membresia activa</h3>
+          </div>
+        </main>
+      );
+    }
+    return (
+      <main>
+        <div className=" text-lg text-center flex flex-col w-full ">
+          <MisDatos cliente={cliente} />
+          <div className="divider w-4/5 self-center"></div>
+
+          <MiMembresia membresia={membresia} />
+        </div>
+      </main>
+    );
+  }
+
+  if (searchParams.success) {
+    const session_id = searchParams.session_id;
+
+    if (!session_id) throw new Error("No se encontro session_id");
+
+    const { data } = await agregarMemrbreia(supabase, userId!, session_id);
+
+    return (
+      <main>
+        <div className=" text-lg text-center flex flex-col w-full ">
+          <MisDatos cliente={cliente} />
+          <div className="divider w-4/5 self-center"></div>
+
+          <MiMembresia membresia={data} />
+        </div>
+      </main>
+    );
+  }
 }
