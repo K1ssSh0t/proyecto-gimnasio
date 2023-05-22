@@ -96,18 +96,23 @@ const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
         <h2 className="text-2xl font-bold mt-6 mb-2 self-start">
           Lista de Clases
         </h2>
-        <select
-          className="select select-ghost w-full max-w-xs"
-          onChange={(e) => SET_PER_PAGE(parseInt(e.target.value))}
-          defaultValue=""
-        >
-          <option disabled value="">
-            Selecciona la paginacion
-          </option>
-          {options.map((option, index) => {
-            return <option key={index}>{option}</option>;
-          })}
-        </select>
+        <div className="form-control w-1/12 max-w-xs">
+          <label className="label">
+            <span className="label-text">Paginacion</span>
+          </label>
+          <select
+            className="select select-ghost w-full max-w-xs"
+            onChange={(e) => SET_PER_PAGE(parseInt(e.target.value))}
+            defaultValue=""
+          >
+            <option disabled value="">
+              Default
+            </option>
+            {options.map((option, index) => {
+              return <option key={index}>{option}</option>;
+            })}
+          </select>
+        </div>
       </div>
       <div className="flex justify-center mb-4 ">
         <AagregarClase listaIdsEmpleados={listaIdsEmpleados} />

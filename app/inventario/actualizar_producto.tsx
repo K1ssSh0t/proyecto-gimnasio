@@ -75,7 +75,7 @@ export function Modal({ producto }: { producto: Producto }) {
             <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
             &#8203;
             <div
-              className="inline-block align-middle max-w-xs w-full bg-accent-focus file:rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+              className="inline-block align-middle max-w-xs w-full bg-[#8fa1e5] dark:bg-[#4b6de7] file:rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
@@ -197,10 +197,7 @@ export function Modal({ producto }: { producto: Producto }) {
                       />
                     </div>
                     <div className=" flex justify-center mt-4">
-                      <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline "
-                        type="submit"
-                      >
+                      <button className="btn btn-info" type="submit">
                         Actualizar Producto
                       </button>
                     </div>
