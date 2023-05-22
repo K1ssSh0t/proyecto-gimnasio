@@ -44,6 +44,10 @@ export function ActualizarEmpleado({ empleado }: Props) {
     Empleado["direccion"] | string
   >(empleado.direccion);
 
+  const [empleadoID, setEmpleadoID] = useState<Empleado["id"] | string>(
+    empleado.id
+  );
+
   function openModal() {
     setIsOpen(true);
   }
@@ -66,7 +70,7 @@ export function ActualizarEmpleado({ empleado }: Props) {
         tipo_empleado: empleadoTipoEmpleado as number,
         direccion: empleadoDireccion,
       })
-      .eq("id", empleado.id);
+      .eq("id", empleadoID);
 
     console.log(data);
 

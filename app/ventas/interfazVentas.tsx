@@ -107,6 +107,7 @@ export default function InterfazVentas({
     setTotal(0);
     setProductosAgregados([]);
     setCorreoCliente("");
+    setCantidad(0);
     router.refresh();
   }, [idVenta]);
 
@@ -250,6 +251,9 @@ export default function InterfazVentas({
                 <th></th>
                 <th>Nombre</th>
                 <th>Precio</th>
+                <th className="truncate">
+                  Cantidad <br /> Disponible
+                </th>
                 <th></th>
               </tr>
             </thead>
@@ -265,7 +269,7 @@ export default function InterfazVentas({
                     <th>{index + 1}</th>
                     <td>{productoFiltered.nombre}</td>
                     <td>{productoFiltered.precio_venta}</td>
-
+                    <td>{productoFiltered.inventario_actual}</td>
                     <th>
                       <label>
                         <input

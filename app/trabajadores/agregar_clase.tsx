@@ -40,6 +40,8 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
     Clase["id_empleado"] | string
   >();
 
+  let currentDate = new Date().toJSON().slice(0, 10);
+
   function openModal() {
     setIsOpen(true);
   }
@@ -120,6 +122,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                         onChange={(event) =>
                           setClaseDescripcion(event.target.value)
                         }
+                        required
                       />
                       <label className="label">
                         <span className="label-text">Fecha de Inicio</span>
@@ -130,9 +133,11 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                         name="fecha_inicio"
                         type="date"
                         value={claseFechaInicio as string}
+                        min={currentDate}
                         onChange={(event) =>
                           setClaseFechaInicio(event.target.value)
                         }
+                        required
                       ></input>
                       <label className="label">
                         <span className="label-text">Fecha de Fin</span>
@@ -143,9 +148,11 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                         type="date"
                         name="fecha_fin"
                         value={claseFechaFin as string}
+                        min={currentDate}
                         onChange={(event) =>
                           setClaseFechaFin(event.target.value)
                         }
+                        required
                       />
                       <label className="label">
                         <span className="label-text">Hora de Inicio</span>
@@ -159,6 +166,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                         onChange={(event) =>
                           setClaseHoraInicio(event.target.value)
                         }
+                        required
                       />
                       <label className="label">
                         <span className="label-text">Hora de Fin</span>
@@ -172,6 +180,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                         onChange={(event) =>
                           setClaseHoraFin(event.target.value)
                         }
+                        required
                       />
                       <label className="label">
                         <span className="label-text">Id Empleado</span>
@@ -186,6 +195,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                           setClaseEmpleado(event.target.value)
                         }
                         list="empleados-lista"
+                        required
                       />
                       <datalist id="empleados-lista">
                         {listaIdsEmpleados?.map((empleado, key) => (

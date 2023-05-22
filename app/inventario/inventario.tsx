@@ -22,7 +22,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
     .slice(offset, offset + PER_PAGE)
     .map((producto, index) => (
       <tr key={index}>
-        <td className="">{index + 1}</td>
+        <td className="">{producto.id}</td>
         <td className="">{producto.nombre}</td>
         <td className="">{producto.costo}</td>
         <td className="">{producto.precio_venta}</td>
@@ -62,6 +62,8 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
   const [productoNombre, setProductoNombre] = useState<
     Producto["nombre"] | string
   >();
+
+  let currentDate = new Date().toJSON().slice(0, 10);
 
   useEffect(() => {
     setProductos(productos);
@@ -164,6 +166,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               name="description"
               type="date"
               value={productoCaducidad as string}
+              min={currentDate}
               onChange={(event) => setProductoCaducidad(event.target.value)}
               required
             ></input>
