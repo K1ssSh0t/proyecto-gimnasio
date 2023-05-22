@@ -134,6 +134,7 @@ export function Modal({ producto }: { producto: Producto }) {
                         onChange={(event) =>
                           setProductoInicial(event.target.value)
                         }
+                        min={0}
                         required
                       />
 
@@ -164,6 +165,7 @@ export function Modal({ producto }: { producto: Producto }) {
                         onChange={(event) =>
                           setProductoCosto(event.target.value)
                         }
+                        min={0}
                         required
                       />
                       <label className="label">
@@ -179,6 +181,7 @@ export function Modal({ producto }: { producto: Producto }) {
                         onChange={(event) =>
                           setProductoPrcio(event.target.value)
                         }
+                        min={0}
                         required
                       />
                       <label className="label">
@@ -193,6 +196,7 @@ export function Modal({ producto }: { producto: Producto }) {
                         onChange={(event) =>
                           setProductoActual(event.target.value)
                         }
+                        min={0}
                         required
                       />
                     </div>

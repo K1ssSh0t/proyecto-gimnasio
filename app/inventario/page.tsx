@@ -10,7 +10,12 @@ export default async function Inventario() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const { data: producto, error } = await supabase.from("producto").select("*");
+  const { data: producto, error } = await supabase
+    .from("producto")
+    .select("*")
+    .order("id", { ascending: true });
+
+  if (error) throw error;
 
   return (
     <div className=" p-8">

@@ -14,7 +14,9 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   const [productos, setProductos] = useState(listaProductos);
 
-  //
+  const [productosAux, setProductosAux] = useState(listaProductos);
+
+  const [nombreBusqueda, setNombreBusqueda] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
 
   const [PER_PAGE, SET_PER_PAGE] = useState(5);
@@ -23,7 +25,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
   const options = [5, 10, 15];
 
   const offset = currentPage * PER_PAGE;
-  const currentPageData = productos
+  const currentPageData = productosAux
     .slice(offset, offset + PER_PAGE)
     .map((producto, index) => (
       <tr key={index}>
@@ -38,7 +40,15 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
         </td>
       </tr>
     ));
-  const pageCount = Math.ceil(productos.length / PER_PAGE);
+  const pageCount = Math.ceil(productosAux.length / PER_PAGE);
+
+  useEffect(() => {
+    setProductosAux(
+      productos.filter((producto) =>
+        producto.nombre?.toLowerCase().includes(nombreBusqueda.toLowerCase())
+      )
+    );
+  }, [nombreBusqueda]);
 
   function handlePageClick({ selected: selectedPage }: { selected: number }) {
     setCurrentPage(selectedPage);
@@ -72,6 +82,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   useEffect(() => {
     setProductos(productos);
+    setProductosAux(productos);
   }, [productos]);
 
   useEffect(() => {
@@ -159,6 +170,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               name="producto-inicial"
               value={productoInicial as number}
               onChange={(event) => setProductoInicial(event.target.value)}
+              min={0}
               required
             />
 
@@ -186,10 +198,11 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               name="costo"
               value={productoCosto as number}
               onChange={(event) => setProductoCosto(event.target.value)}
+              min={0}
               required
             />
             <label className="label">
-              <span className="label-text">Precio</span>
+              <span className="label-text">Precio de Venta</span>
             </label>
             <input
               className="input input-bordered w-full"
@@ -199,6 +212,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               name="precio"
               value={productoPrecio as number}
               onChange={(event) => setProductoPrcio(event.target.value)}
+              min={0}
               required
             />
             <label className="label">
@@ -211,6 +225,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               name="quantity"
               value={productoActual as string}
               onChange={(event) => setProductoActual(event.target.value)}
+              min={0}
               required
             />
           </div>
@@ -241,6 +256,43 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               return <option key={index}>{option}</option>;
             })}
           </select>
+        </div>
+      </div>
+      <div className="flex justify-center my-4">
+        <div className="form-control">
+          <div className="input-group">
+            <label>
+              <input
+                type="text"
+                placeholder="Buscar producto…"
+                className="input input-bordered"
+                list="productos"
+                value={nombreBusqueda}
+                onChange={(e) => setNombreBusqueda(e.target.value)}
+              />
+              <datalist id="productos">
+                {productos.map((producto, index) => (
+                  <option value={producto.nombre!} key={index} />
+                ))}
+              </datalist>
+            </label>
+            <button className="btn btn-square">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
       <div className="overflow-x-auto">
