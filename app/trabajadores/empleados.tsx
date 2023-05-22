@@ -20,7 +20,10 @@ export default function EmpleadosLista({
   //
 
   const [currentPage, setCurrentPage] = useState(0);
-  const PER_PAGE = 5;
+  const [PER_PAGE, SET_PER_PAGE] = useState(5);
+  //const PER_PAGE = 5;
+
+  const options = [5, 10, 15];
   const offset = currentPage * PER_PAGE;
   const currentPageData = empleados
     .slice(offset, offset + PER_PAGE)
@@ -88,42 +91,60 @@ export default function EmpleadosLista({
   }, [supabase, setEmpleados, empleados]);
 
   return (
-    <div className=" flex flex-auto flex-col space-y-4 justify-center items-center">
-      <h2 className="text-2xl  mt-6 mb-2">Lista de Empleados</h2>
-      <div className="  overflow-x-auto w-11/12">
-        <table className=" table table-compact w-full">
-          <thead>
-            <tr className=" text-center  ">
-              <th style={{ position: "unset", textTransform: "capitalize" }}>
-                Empleado ID
-              </th>
-              <th className=" capitalize ">Nombre</th>
-              <th className=" capitalize">Apellido Paterno</th>
-              <th className=" capitalize ">Apellido Materno</th>
-              <th className=" capitalize ">Telefono</th>
-              <th className=" capitalize">Correo</th>
-              <th className="capitalize ">Puesto</th>
-              <th className="capitalize ">Direccion</th>
-              <th className=" capitalzie">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>{currentPageData}</tbody>
-        </table>
-        <div className=" flex justify-center text-center">
-          <ReactPaginate
-            previousLabel={"← Anterior"}
-            nextLabel={"Siguiente →"}
-            pageCount={pageCount}
-            onPageChange={handlePageClick}
-            disabledClassName="btn-disabled "
-            activeClassName="[&>a]:btn-active "
-            pageLinkClassName="btn rounded-none"
-            className=" btn-group "
-            nextClassName="btn rounded-r-lg  "
-            previousClassName=" btn rounded-l-lg "
-            nextLinkClassName="link link-hover"
-            previousLinkClassName="link link-hover "
-          />
+    <div className=" p-6">
+      <div className="flex justify-between mt-1 items-center p-8 ">
+        <h2 className="text-2xl font-bold mt-6 mb-2 self-start">
+          Lista de Empleados
+        </h2>
+        <select
+          className="select select-ghost w-full max-w-xs"
+          onChange={(e) => SET_PER_PAGE(parseInt(e.target.value))}
+          defaultValue=""
+        >
+          <option disabled value="">
+            Selecciona la paginacion
+          </option>
+          {options.map((option, index) => {
+            return <option key={index}>{option}</option>;
+          })}
+        </select>
+      </div>
+      <div className="flex justify-center">
+        <div className="  overflow-x-auto w-11/12">
+          <table className=" table table-compact w-full">
+            <thead>
+              <tr className=" text-center  ">
+                <th style={{ position: "unset", textTransform: "capitalize" }}>
+                  Empleado ID
+                </th>
+                <th className=" capitalize ">Nombre</th>
+                <th className=" capitalize">Apellido Paterno</th>
+                <th className=" capitalize ">Apellido Materno</th>
+                <th className=" capitalize ">Telefono</th>
+                <th className=" capitalize">Correo</th>
+                <th className="capitalize ">Puesto</th>
+                <th className="capitalize ">Direccion</th>
+                <th className=" capitalzie">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>{currentPageData}</tbody>
+          </table>
+          <div className=" flex justify-center text-center">
+            <ReactPaginate
+              previousLabel={"← Anterior"}
+              nextLabel={"Siguiente →"}
+              pageCount={pageCount}
+              onPageChange={handlePageClick}
+              disabledClassName="btn-disabled "
+              activeClassName="[&>a]:btn-active "
+              pageLinkClassName="btn rounded-none"
+              className=" btn-group "
+              nextClassName="btn rounded-r-lg  "
+              previousClassName=" btn rounded-l-lg "
+              nextLinkClassName="link link-hover"
+              previousLinkClassName="link link-hover "
+            />
+          </div>
         </div>
       </div>
     </div>

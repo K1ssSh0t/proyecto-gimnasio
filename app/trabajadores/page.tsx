@@ -34,7 +34,9 @@ export default async function Empleados() {
 
   return (
     <main>
-      <div className=" text-3xl text-center font-bold">Módulo de Empleados</div>
+      <div className=" text-3xl text-center font-bold mt-4">
+        Módulo de Empleados
+      </div>
       <div className=" ">
         <EmpleadosLista empleadosLista={empleados || []} />
         <ClasesLista

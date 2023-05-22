@@ -16,7 +16,12 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
 
   //
   const [currentPage, setCurrentPage] = useState(0);
-  const PER_PAGE = 5;
+
+  const [PER_PAGE, SET_PER_PAGE] = useState(5);
+  //const PER_PAGE = 5;
+
+  const options = [5, 10, 15];
+
   const offset = currentPage * PER_PAGE;
   const currentPageData = productos
     .slice(offset, offset + PER_PAGE)
@@ -216,7 +221,23 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
           </div>
         </form>
       </div>
-      <h2 className="text-2xl font-bold mt-6 mb-2">Lista de Inventario</h2>
+      <div className="flex justify-between  mt-4 items-center">
+        <h2 className="text-2xl font-bold mt-6 mb-2 self-start">
+          Lista de Inventario
+        </h2>
+        <select
+          className="select select-ghost w-full max-w-xs"
+          onChange={(e) => SET_PER_PAGE(parseInt(e.target.value))}
+          defaultValue=""
+        >
+          <option disabled value="">
+            Selecciona la paginacion
+          </option>
+          {options.map((option, index) => {
+            return <option key={index}>{option}</option>;
+          })}
+        </select>
+      </div>
       <div className="overflow-x-auto">
         <table className=" table  w-full">
           <thead>
