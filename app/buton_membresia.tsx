@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 
 type Membresias = Database["public"]["Tables"]["tipo_membresia"]["Row"];
 
-//TODO : Agregar direccionamineto para crearse una cuenta si no hay una session
 export function MembresiaButton({ membresia }: { membresia: Membresias }) {
   const { supabase, session } = useSupabase();
   const router = useRouter();

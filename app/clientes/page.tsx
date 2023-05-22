@@ -37,7 +37,6 @@ const agregarMemrbreia = async (
           fecha_activacion: currentDate,
           id_cliente: userId,
           id_tipo_membresia: membresia_tipo,
-          //TODO:Agregar tipo de membresia
         },
       ])
       .select()

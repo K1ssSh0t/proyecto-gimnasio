@@ -53,7 +53,11 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
   function handlePageClick({ selected: selectedPage }: { selected: number }) {
     setCurrentPage(selectedPage);
   }
-  //
+
+  const [porcentaje_de_venta, setPorcentaje_de_venta] = useState<
+    number | string
+  >();
+
   const [productoInicial, setProductoInicial] = useState<
     Producto["inventario_incial"] | string
   >();
@@ -79,6 +83,14 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
   >();
 
   let currentDate = new Date().toJSON().slice(0, 10);
+
+  useEffect(() => {
+    let cantidadDescuento =
+      ((productoCosto as number) * parseInt(porcentaje_de_venta as string)) /
+      100;
+    console.log(cantidadDescuento);
+    setProductoPrcio(parseInt(productoCosto as string) + cantidadDescuento);
+  }, [porcentaje_de_venta]);
 
   useEffect(() => {
     setProductos(productos);
@@ -135,6 +147,12 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
     });
 
     console.log(error);
+    setProductoNombre("");
+    setProductoActual("");
+    setProductoCosto("");
+    setProductoCaducidad("");
+    setPorcentaje_de_venta("");
+    setProductoInicial("");
   };
 
   return (
@@ -202,8 +220,24 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               required
             />
             <label className="label">
+              <span className="label-text">Porcentaje del Costo</span>
+            </label>
+
+            <input
+              className="input input-bordered w-full"
+              id="porcentaje_venta"
+              type="number"
+              step="1"
+              name="porcentaje_venta"
+              value={porcentaje_de_venta as number}
+              onChange={(event) => setPorcentaje_de_venta(event.target.value)}
+              min={1}
+              required
+            />
+            <label className="label">
               <span className="label-text">Precio de Venta</span>
             </label>
+
             <input
               className="input input-bordered w-full"
               id="producto-precio"
@@ -211,10 +245,12 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
               step="0.01"
               name="precio"
               value={productoPrecio as number}
-              onChange={(event) => setProductoPrcio(event.target.value)}
+              // onChange={(event) => setProductoPrcio(event.target.value)}
               min={0}
               required
+              readOnly
             />
+
             <label className="label">
               <span className="label-text">Cantidad</span>
             </label>
@@ -296,7 +332,7 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <table className=" table  w-full">
+        <table className=" table table-zebra  w-full">
           <thead>
             <tr className=" text-center [&>th]:capitalize [&>th]:text-lg ">
               <th style={{ position: "unset" }}>Product ID</th>

@@ -33,6 +33,7 @@ export default function InterfazVentas({
   const [descuento, setDescuento] = useState(0);
   const [totalDescuento, setTotalDescuento] = useState(0);
   //  TODO: Hacer que el descuento sea de acuerdo a la memebresia del cliente
+  // TODO: Hacer que te mande a una nueva interfaz de venta cuando se haga el pago donde se muestren el detalle venta
   const router = useRouter();
 
   const [idVenta, setIdVenta] = useState<number>();
@@ -53,7 +54,6 @@ export default function InterfazVentas({
     let cantidadDescuento = (total * descuento) / 100;
     //setTotalDescuento(total - totalDescuento);
     console.log(cantidadDescuento);
-    // FIXME: Arreglar cuando no se selecciono un descuento el total es igual a cero
 
     setTotalDescuento(total - cantidadDescuento);
 
@@ -64,7 +64,7 @@ export default function InterfazVentas({
     let cantidadDescuento = (total * descuento) / 100;
     //setTotalDescuento(total - totalDescuento);
     console.log(cantidadDescuento);
-    // FIXME: Arreglar cuando no se selecciono un descuento el total es igual a cero
+
     if (cantidadDescuento != 0) {
       setTotalDescuento(total - cantidadDescuento);
     }
@@ -115,7 +115,6 @@ export default function InterfazVentas({
   // y asigna el id de la venta a la variable idVenta para que se pueda generar los detalles de la venta
   const agregarVenta = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    //TODO: MODIFICAR LA CONDICION EN UNA FUNCIION
 
     const generarVenta = async () => {
       if (clienteID != undefined && total != 0 && empleadoID != undefined) {

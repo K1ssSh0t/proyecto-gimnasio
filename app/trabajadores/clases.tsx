@@ -119,7 +119,7 @@ const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
       </div>
       <div className="flex justify-center ">
         <div className="  overflow-x-auto w-11/12">
-          <table className=" table table-compact w-full">
+          <table className=" table table-compact table-zebra w-full">
             <thead>
               <tr className=" text-center [&>th]:capitalize ">
                 <th style={{ position: "unset" }}>Clase ID</th>
