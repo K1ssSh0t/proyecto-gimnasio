@@ -9,21 +9,24 @@ type Membresia = Database["public"]["Tables"]["membresia"]["Row"];
 export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
   const { supabase } = useSupabase();
 
-  const [email, setEmail] = useState("");
+  const [telefono, setTelefono] = useState("");
+
+  const [telefonoAux, setTelefonoAux] = useState("");
+
   const [id_cliente, setId_cliente] = useState<string | undefined>("");
 
-  const [encontrado, setEncontrado] = useState(false);
+  const [encontrado, setEncontrado] = useState("");
 
   const [estadoMembresia, setEstadoMembresia] = useState<Membresia[]>();
 
-  console.log(email);
+  console.log(telefono);
   console.log(id_cliente);
   console.log(encontrado);
 
   useEffect(() => {
-    const objeto = clientes.find((cliente) => cliente.email === email);
+    const objeto = clientes.find((cliente) => cliente.telefono === telefono);
     setId_cliente(objeto?.id);
-  }, [email]);
+  }, [telefono]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,10 +38,11 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
 
     console.log(membresia);
     if (!error && membresia.length > 0) {
-      setEncontrado(true);
+      setEncontrado("encontrado");
       setEstadoMembresia(membresia!);
+      setTelefonoAux(telefono);
     } else {
-      setEncontrado(false);
+      setEncontrado("no encontrado");
     }
   };
   return (
@@ -49,17 +53,18 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
             <label>
               <input
                 type="text"
-                placeholder="Buscar Correo…"
+                placeholder="Buscar Telefono…"
                 className="input input-bordered"
                 list="clientes"
-                value={email}
-                onChange={(e) => (
-                  setEmail(e.target.value), setEncontrado(false)
-                )}
+                inputMode="tel"
+                value={telefono}
+                name="telefono"
+                id="telefono"
+                onChange={(e) => setTelefono(e.target.value)}
               />
               <datalist id="clientes">
                 {clientes.map((cliente, index) => (
-                  <option value={cliente.email!} key={index} />
+                  <option value={cliente.telefono!} key={index} />
                 ))}
               </datalist>
             </label>
@@ -82,11 +87,11 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
           </form>
         </div>
       </div>
-      {encontrado ? (
+      {encontrado == "encontrado" ? (
         <div className="stats stats-vertical lg:stats-horizontal shadow scale-75 lg:scale-100">
           <div className="stat">
-            <div className="stat-title">Corre del Cliente</div>
-            <div className="stat-value">{email}</div>
+            <div className="stat-title">Telefono del Cliente</div>
+            <div className="stat-value">{telefonoAux}</div>
             <div className="stat-desc"></div>
           </div>
 
@@ -107,7 +112,11 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
           </div>
         </div>
       ) : (
-        <div></div>
+        <div className=" text-lg text-center flex flex-col w-full ">
+          <div className="divider w-4/5 self-center"></div>
+
+          <h3>No se encontro el cliete</h3>
+        </div>
       )}
     </div>
   );

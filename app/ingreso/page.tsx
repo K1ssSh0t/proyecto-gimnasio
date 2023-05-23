@@ -7,7 +7,7 @@ export const revalidate = 0;
 async function getClientes(supabase: any) {
   let { data: clientes, error } = await supabase
     .from("clientes")
-    .select("id,email");
+    .select("id,telefono");
 
   return clientes;
 }
