@@ -12,11 +12,9 @@ export const revalidate = 0;
 
 export async function POST(req: NextRequest) {
   let data = await req.json();
-  //const { amount } = data;
 
   const { stripe_id, id } = data;
 
-  console.log(data);
   const supabase = createServerClient();
 
   const {
@@ -33,8 +31,6 @@ export async function POST(req: NextRequest) {
     .from("membresia")
     .select("*")
     .eq("id_cliente", session?.user.id);
-
-  console.log(membresia);
 
   if (membresia!.length > 0) {
     return NextResponse.json(

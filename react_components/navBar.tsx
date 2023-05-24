@@ -77,6 +77,9 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
                 <li className=" ">
                   <Link href="/clientes">Mis Datos</Link>
                 </li>
+                <li className=" ">
+                  <Link href="/clientes/inscribirse">Clases</Link>
+                </li>
               </ul>
             )}
           </div>
@@ -117,6 +120,9 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
           <ul className="menu p-4 w-80 bg-base-100">
             <li className=" ">
               <Link href="/clientes">Mis Datos</Link>
+            </li>
+            <li className=" ">
+              <Link href="/clientes/inscribirse">Clases</Link>
             </li>
           </ul>
         )}
