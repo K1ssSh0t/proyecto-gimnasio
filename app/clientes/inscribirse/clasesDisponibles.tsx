@@ -40,9 +40,6 @@ export function ClasesDisponibles({
     (inscripcion) => inscripcion.inscripciones
   );
 
-  console.log(clasesInscritas);
-  console.log(inscripciones.length);
-
   function buscarClaseInscrita(
     arr: ClasesInscritas[],
     idClase: number
@@ -120,7 +117,6 @@ export function ClasesDisponibles({
           </tbody>
         </table>
       </div>
-      <button className="btn btn-info">Clases Inscritas </button>
       <div className="flex flex-col w-full border-opacity-50 justify-center items-center my-4">
         <div className="divider w-11/12 self-center" />
         <div className="grid h-20 card bg-base-300 rounded-box place-items-center w-11/12">
