@@ -7,7 +7,12 @@ interface Props {
   children: React.ReactNode;
 }
 
-const verificarUsuairio = async (supabase: any, userId: string | undefined) => {
+type supabase = ReturnType<typeof createServerClient>;
+
+const verificarUsuairio = async (
+  supabase: supabase,
+  userId: string | undefined
+) => {
   let { data, error } = await supabase.rpc("es_empleado", {
     employee_id: userId,
   });
@@ -15,6 +20,14 @@ const verificarUsuairio = async (supabase: any, userId: string | undefined) => {
   return data;
 };
 
+const verificarInstructor = async (supabase: supabase, userId: string) => {
+  let { data, error } = await supabase.rpc("es_instructor", {
+    employee_id: userId,
+  });
+
+  if (error) console.error(error);
+  else return data;
+};
 async function NavigationMenu({ children }: { children: React.ReactNode }) {
   const supabase = createServerClient();
 
@@ -24,6 +37,8 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
 
   const userId = session?.user.id;
   const esEmpleado = await verificarUsuairio(supabase, userId);
+
+  const es_instructor = await verificarInstructor(supabase, userId!);
 
   return (
     <div className="drawer">
@@ -54,7 +69,13 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
           <div className="flex-none hidden lg:block">
-            {!session ? null : esEmpleado ? (
+            {!session ? null : es_instructor ? (
+              <ul className="menu menu-horizontal">
+                <li>
+                  <Link href="/alumnos">Mis Alumos</Link>
+                </li>
+              </ul>
+            ) : esEmpleado ? (
               <ul className="menu menu-horizontal">
                 <li>
                   <Link href="/ventas">Ventas</Link>
@@ -70,6 +91,9 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
                 </li>
                 <li>
                   <Link href="/reportes">Reportes</Link>
+                </li>
+                <li>
+                  <Link href="/alumnos">Alumnos</Link>
                 </li>
               </ul>
             ) : (
@@ -98,6 +122,12 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
         <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
         {!session ? (
           <ul className="menu p-4 w-80 bg-base-100"></ul>
+        ) : es_instructor ? (
+          <ul className="menu p-4 w-80 bg-base-100">
+            <li>
+              <Link href="/alumnos">Mis Alumnos</Link>
+            </li>
+          </ul>
         ) : esEmpleado ? (
           <ul className="menu p-4 w-80 bg-base-100">
             <li>
@@ -114,6 +144,9 @@ async function NavigationMenu({ children }: { children: React.ReactNode }) {
             </li>
             <li>
               <Link href="/reportes">Reportes</Link>
+            </li>
+            <li>
+              <Link href="/alumnos">Alumnos</Link>
             </li>
           </ul>
         ) : (

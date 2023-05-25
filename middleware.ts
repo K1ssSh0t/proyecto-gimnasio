@@ -4,6 +4,8 @@ import type { NextRequest } from "next/server";
 
 import type { Database } from "./types/supabase";
 
+type supabase = ReturnType<typeof createMiddlewareSupabaseClient>;
+
 // this middleware refreshes the user's session and must be run
 // for any Server Component route that uses `createServerComponentSupabaseClient`
 
@@ -24,9 +26,30 @@ export async function middleware(req: NextRequest) {
     employee_id: userId,
   });
 
+  let { data: es_instructor, error: es_instructor_error } = await supabase.rpc(
+    "es_instructor",
+    {
+      employee_id: userId,
+    }
+  );
+
   // Funcion que determina si se encuentra en alguna de las siguientes rutas
   // que son solo para el administrador
   const checarrutaAdmin = () => {
+    if (
+      req.nextUrl.pathname.startsWith("/inventario") ||
+      req.nextUrl.pathname.startsWith("/trabajadores") ||
+      req.nextUrl.pathname.startsWith("/ventas") ||
+      req.nextUrl.pathname.startsWith("/ingreso") ||
+      req.nextUrl.pathname.startsWith("/reportes") ||
+      req.nextUrl.pathname.startsWith("/alumnos")
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const checarrutaSoloAdmin = () => {
     if (
       req.nextUrl.pathname.startsWith("/inventario") ||
       req.nextUrl.pathname.startsWith("/trabajadores") ||
@@ -57,6 +80,13 @@ export async function middleware(req: NextRequest) {
 
   // Condicion que determina si el usuario no es administrador y esta en la ruta que solo es para el administrador
   // redirigiendolo hacia la ruta de inicio
+  if (es_instructor && checarrutaSoloAdmin()) {
+    const redirectUrl = req.nextUrl.clone();
+    redirectUrl.pathname = "/";
+    redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
+
   if (data != true && checarrutaAdmin()) {
     const redirectUrl = req.nextUrl.clone();
     redirectUrl.pathname = "/";

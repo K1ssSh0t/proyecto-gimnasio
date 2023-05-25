@@ -309,6 +309,46 @@ export interface Database {
         };
         Returns: boolean;
       };
+      es_instructor: {
+        Args: {
+          employee_id: string;
+        };
+        Returns: boolean;
+      };
+
+      obtener_clientes_inscritos: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          clase_id: number;
+          clase_descripcion: string;
+          cliente_nombre: string;
+          cliente_apellidos: string;
+          cliente_telefono: string;
+        }[];
+      };
+      obtener_clientes_inscritos_por_empleado:
+        | {
+            Args: Record<PropertyKey, never>;
+            Returns: {
+              clase_id: number;
+              clase_descripcion: string;
+              cliente_nombre: string;
+              cliente_apellidos: string;
+              cliente_telefono: string;
+            }[];
+          }
+        | {
+            Args: {
+              p_empleado_id: string;
+            };
+            Returns: {
+              clase_id: number;
+              clase_descripcion: string;
+              cliente_nombre: string;
+              cliente_apellidos: string;
+              cliente_telefono: string;
+            }[];
+          };
     };
     Enums: {
       app_role: "cliente" | "empleado";
