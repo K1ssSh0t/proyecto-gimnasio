@@ -315,6 +315,14 @@ export interface Database {
         };
         Returns: boolean;
       };
+      obtener_clases_inscripciones: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          clase_id: number;
+          clase_descripcion: string;
+          cantidad: number;
+        }[];
+      };
 
       obtener_clientes_inscritos: {
         Args: Record<PropertyKey, never>;
@@ -326,29 +334,41 @@ export interface Database {
           cliente_telefono: string;
         }[];
       };
-      obtener_clientes_inscritos_por_empleado:
-        | {
-            Args: Record<PropertyKey, never>;
-            Returns: {
-              clase_id: number;
-              clase_descripcion: string;
-              cliente_nombre: string;
-              cliente_apellidos: string;
-              cliente_telefono: string;
-            }[];
-          }
-        | {
-            Args: {
-              p_empleado_id: string;
-            };
-            Returns: {
-              clase_id: number;
-              clase_descripcion: string;
-              cliente_nombre: string;
-              cliente_apellidos: string;
-              cliente_telefono: string;
-            }[];
-          };
+      obtener_clientes_inscritos_por_empleado: {
+        Args: {
+          p_empleado_id: string;
+        };
+        Returns: {
+          clase_id: number;
+          clase_descripcion: string;
+          cliente_nombre: string;
+          cliente_apellidos: string;
+          cliente_telefono: string;
+        }[];
+      };
+      obtener_membresias_por_tipo: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          tipo_membresia_nombre: string;
+          cantidad: number;
+        }[];
+      };
+      obtener_productos_mas_vendidos: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          producto_id: number;
+          producto_nombre: string;
+          total_ventas: number;
+        }[];
+      };
+      obtener_productos_menos_vendidos: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          producto_id: number;
+          producto_nombre: string;
+          cantidad_vendida: number;
+        }[];
+      };
     };
     Enums: {
       app_role: "cliente" | "empleado";

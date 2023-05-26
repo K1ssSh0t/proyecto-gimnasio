@@ -15,7 +15,7 @@ type Productos =
   | {
       producto_id: number;
       producto_nombre: string;
-      total_ventas: number;
+      cantidad_vendida: number;
     }[]
   | null;
 
@@ -42,23 +42,28 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Productos Más Vendidos",
+      text: "Productos Menos Vendidos",
     },
   },
 };
 
-export default function Grafica({ productos }: { productos: Productos }) {
+export function ProductosMenosVendidos({
+  productos,
+}: {
+  productos: Productos;
+}) {
   const nombres = productos!.map((producto) => producto.producto_nombre);
-  const totalProductos = productos?.map((producto) => producto.total_ventas);
-
+  const totalProductos = productos?.map(
+    (producto) => producto.cantidad_vendida
+  );
   const data = {
     labels: nombres,
     datasets: [
       {
         label: "Cantidad Vendida",
         data: totalProductos,
-        borderColor: "rgb(30,144,255)",
-        backgroundColor: "rgb(30,144,255,0.5)",
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
     ],
   };
