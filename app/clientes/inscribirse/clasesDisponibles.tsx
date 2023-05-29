@@ -22,10 +22,6 @@ type ClasesInscritas = {
     | null;
 };
 
-// TODO: MODIFICAR PARA QUE SE MUESTREN LAS CLASES QUE ESTE INSCRITO Y HACER QUE SE PUEDAN ACTUALIZAR
-
-// HACER QUE SEA UN BOTON QUE INSCRIBA A UNA CLASE , MOSTRAR UN MENSAJE SI YA NO SE PUEDE INSCRIBAR A MAS CLASES
-// EN OTRO APARTADO MOSTRAR A LAS CLASES QUE SE ESTA INSCRITO Y DESDE AHI SE VA PODER ELIMINARLAS
 export function ClasesDisponibles({
   clases,
   inscripciones,
@@ -47,6 +43,9 @@ export function ClasesDisponibles({
     return arr.some((clase) => clase.id === idClase);
   }
 
+  //Funcion que maneja la inscripcion de una clase si ya se tiene dos
+  //inscripciones se muestra un mensaje  de que no se pueden agregar mas de dos
+  // y si ya se esta inscrito a la clase se muestra un mensaje de que ya esta inscrito
   const handleClick = async (event: React.SyntheticEvent, claseID: number) => {
     event.preventDefault();
 
@@ -65,6 +64,7 @@ export function ClasesDisponibles({
     router.refresh();
   };
 
+  //Funcion que maneja la eliminacion de una inscripcion
   const handleEliminar = async (
     event: React.SyntheticEvent,
     inscripcionID: number

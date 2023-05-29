@@ -8,6 +8,7 @@ type supabase = ReturnType<typeof createServerClient>;
 
 export const revalidate = 0;
 
+//Funcion quee obtiene las clases disponibles ordenados por id
 async function getClases(supabase: supabase) {
   let { data: clase, error } = await supabase
     .from("clase")
@@ -19,6 +20,7 @@ async function getClases(supabase: supabase) {
   return clase;
 }
 
+//Funcion que obtiene las clases a las que se esta inscrito basado en la id del usuario actual
 async function getClasesInscritas(supabase: supabase) {
   const {
     data: { session },

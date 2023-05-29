@@ -3,6 +3,7 @@ import { createServerClient } from "@/utils/supabase-server";
 
 type supabase = ReturnType<typeof createServerClient>;
 
+//Funcion que me regresa todos los alumnos de las clases
 async function getAlumnos(supabase: supabase) {
   let { data, error } = await supabase.rpc("obtener_clientes_inscritos");
 
@@ -10,6 +11,7 @@ async function getAlumnos(supabase: supabase) {
   else return data;
 }
 
+//Funcion que me regresa todos los alumnos de las clases inscritos por empleado
 async function getAlumonsPorEmeplado(supabase: supabase, userId: string) {
   let { data, error } = await supabase.rpc(
     "obtener_clientes_inscritos_por_empleado",
@@ -22,6 +24,7 @@ async function getAlumonsPorEmeplado(supabase: supabase, userId: string) {
   else return data;
 }
 
+//Funcion que me devuelve si el usuario actual es un instructor
 async function getEsInstructor(supabase: supabase, userId: string) {
   let { data, error } = await supabase.rpc("es_instructor", {
     employee_id: userId,
