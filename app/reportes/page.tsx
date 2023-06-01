@@ -1,6 +1,9 @@
+"use client";
 import * as React from "react";
+import { useRef, useEffect, useState } from "react";
 
-import { createServerClient } from "../../utils/supabase-server";
+//import { createServerClient } from "../../utils/supabase-server";
+import { createBrowserClient } from "@/utils/supabase-browser";
 import Grafica from "./graficaDePastel";
 import { Database } from "@/types/supabase";
 import TotalVentaMes from "./total_ventas";
@@ -8,77 +11,128 @@ import { VentasMembresias } from "./membresias_vendidas";
 import { InscripcionesClases } from "./total_inscripciones_clases";
 import { ProductosMenosVendidos } from "./productos_menos_vendidos";
 
+import { useReactToPrint } from "react-to-print";
+
 type Venta = Database["public"]["Tables"]["venta"]["Row"];
 
-type supabase = ReturnType<typeof createServerClient>;
+type supabase = ReturnType<typeof createBrowserClient>;
+
+type Membresia =
+  Database["public"]["Functions"]["obtener_membresias_por_tipo"]["Returns"];
+
+type Clases =
+  Database["public"]["Functions"]["obtener_clases_inscripciones"]["Returns"];
+
+type Productos =
+  Database["public"]["Functions"]["obtener_productos_mas_vendidos"]["Returns"];
+
+type menos_productos =
+  Database["public"]["Functions"]["obtener_productos_menos_vendidos"]["Returns"];
 
 export const revalidate = 0;
 
-async function getMembresiasPorTipo(supabase: supabase) {
-  let { data, error } = await supabase.rpc("obtener_membresias_por_tipo");
+export default function InterfazReportes() {
+  const supabase = createBrowserClient();
 
-  if (error) console.error(error);
-  else return data;
-}
+  const componentRef = useRef<HTMLDivElement>(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: "Reporte de Ventas",
+    onAfterPrint: () => alert("Reporte generado"),
+  });
 
-async function getInscripcionesPorClaset(supabase: supabase) {
-  let { data, error } = await supabase
-    .rpc("obtener_clases_inscripciones")
-    .order("clase_id", { ascending: true });
+  const [isLoading, setLoading] = useState(false);
 
-  if (error) console.error(error);
-  else return data;
-}
+  const [membresias, setMembresias] = React.useState<
+    Membresia | undefined | null
+  >();
+  const [productos, setProductos] = React.useState<
+    Productos | undefined | null
+  >();
+  const [clases, setClases] = React.useState<Clases | undefined | null>();
+  const [menos_productos, setMenosProductos] = React.useState<
+    menos_productos | undefined | null
+  >();
 
-async function getProductosMasVendidos(supabase: supabase) {
-  let { data, error } = await supabase
-    .rpc("obtener_productos_mas_vendidos")
-    .order("producto_id", { ascending: true });
+  async function getMembresiasPorTipo() {
+    let { data, error } = await supabase.rpc("obtener_membresias_por_tipo");
 
-  if (error) console.error(error);
-  else return data;
-}
+    if (error) console.error(error);
+    else return data;
+  }
 
-async function getProductosMenosVendidos(supabase: supabase) {
-  let { data, error } = await supabase
-    .rpc("obtener_productos_menos_vendidos")
-    .order("producto_id", { ascending: true });
+  async function getInscripcionesPorClase() {
+    let { data, error } = await supabase
+      .rpc("obtener_clases_inscripciones")
+      .order("clase_id", { ascending: true });
 
-  if (error) console.error(error);
-  else return data;
-}
+    if (error) console.error(error);
+    else return data;
+  }
 
-export default async function InterfazReportes() {
-  const supabase = createServerClient();
+  async function getProductosMasVendidos() {
+    let { data, error } = await supabase
+      .rpc("obtener_productos_mas_vendidos")
+      .order("producto_id", { ascending: true });
 
-  const { data: detalle_venta, error } = await supabase
-    .from("detalle_venta")
-    .select("*");
+    if (error) console.error(error);
+    else return data;
+  }
 
-  const membresias = await getMembresiasPorTipo(supabase);
+  async function getProductosMenosVendidos() {
+    let { data, error } = await supabase
+      .rpc("obtener_productos_menos_vendidos")
+      .order("producto_id", { ascending: true });
 
-  const clases = await getInscripcionesPorClaset(supabase);
+    if (error) console.error(error);
+    else return data;
+  }
 
-  const productos = await getProductosMasVendidos(supabase);
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      setMembresias(await getMembresiasPorTipo());
+      setClases(await getInscripcionesPorClase());
+      setProductos(await getProductosMasVendidos());
+      setMenosProductos(await getProductosMenosVendidos());
+      setLoading(false);
+    };
 
-  const menos_productos = await getProductosMenosVendidos(supabase);
+    fetchData().catch(console.error);
+  }, []);
 
-  return (
-    <div className="container mx-auto flex flex-col justify-center items-center md:grid md:grid-cols-2 gap-4 m-4 bg-[#daffff] ">
-      <div className=" flex flex-col items-center justify-center ">
-        <Grafica productos={productos || []} />
-      </div>
-
-      <div className="flex flex-col items-center justify-center  ">
-        <ProductosMenosVendidos productos={menos_productos || []} />
-      </div>
-
-      <div className=" flex flex-col items-center justify-center">
-        <VentasMembresias membresias={membresias || []} />
-      </div>
+  if (isLoading)
+    return (
       <div className=" flex flex-col items-center justify-center m-4">
-        <InscripcionesClases clases={clases || []} />
+        <p>Cargando...</p>
       </div>
-    </div>
+    );
+  return (
+    <>
+      <div
+        className="container mx-auto flex flex-col justify-center items-center md:grid md:grid-cols-2 gap-4 m-4 bg-white "
+        ref={componentRef}
+      >
+        <div className=" flex flex-col items-center justify-center ">
+          <Grafica productos={productos || []} />
+        </div>
+
+        <div className="flex flex-col items-center justify-center  ">
+          <ProductosMenosVendidos productos={menos_productos || []} />
+        </div>
+
+        <div className=" flex flex-col items-center justify-center">
+          <VentasMembresias membresias={membresias || []} />
+        </div>
+        <div className=" flex flex-col items-center justify-center m-4">
+          <InscripcionesClases clases={clases || []} />
+        </div>
+      </div>
+      <div className="flex items-center justify-center m-4">
+        <button onClick={handlePrint} className="btn btn-info">
+          Imprimir Reporte
+        </button>
+      </div>
+    </>
   );
 }
