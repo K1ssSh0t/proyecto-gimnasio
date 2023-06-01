@@ -21,7 +21,7 @@ export function MembresiaButton({ membresia }: { membresia: Membresias }) {
 
     if (data != true) {
       try {
-        await fetch("http://localhost:3000/api/create-payment-intent", {
+        await fetch(`/api/create-payment-intent`, {
           method: "POST",
           body: JSON.stringify(membresia),
           headers: {
