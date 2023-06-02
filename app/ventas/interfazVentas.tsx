@@ -243,11 +243,13 @@ export default function InterfazVentas({
         </div>
       </div>
       <div className=" grid grid-cols-1 gap-4 mt-12 lg:grid-cols-3 mx-4">
-        <div className=" flex flex-col w-full items-center justify-start overflow-x-auto border-solid border-2 border-sky-500  aspect-square">
+        <div className=" w-full  border-solid border-2 border-sky-500  aspect-square overflow-x-auto">
           <table className="table table-zebra w-full">
             <thead>
               <tr>
-                <th></th>
+                <th
+                  style={{ position: "unset", textTransform: "capitalize" }}
+                ></th>
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th className="truncate">
@@ -256,6 +258,7 @@ export default function InterfazVentas({
                 <th></th>
               </tr>
             </thead>
+
             {productos
               .filter((producto) =>
                 producto.nombre
@@ -265,7 +268,7 @@ export default function InterfazVentas({
               .map((productoFiltered, index) => (
                 <tbody key={index}>
                   <tr>
-                    <th>{index + 1}</th>
+                    <td>{index + 1}</td>
                     <td>{productoFiltered.nombre}</td>
                     <td>{productoFiltered.precio_venta}</td>
                     <td>{productoFiltered.inventario_actual}</td>
@@ -329,11 +332,13 @@ export default function InterfazVentas({
             <span className="">Agregar</span>
           </button>
         </div>
-        <div className="w-full  border-solid border-2 border-sky-500  aspect-square">
+        <div className="w-full  border-solid border-2 border-sky-500  aspect-square overflow-x-auto">
           <table className="table table-zebra w-full">
             <thead>
               <tr>
-                <th></th>
+                <th
+                  style={{ position: "unset", textTransform: "capitalize" }}
+                ></th>
                 <th>Nombre</th>
                 <th>Precio</th>
                 <th>Cantidad</th>
@@ -343,7 +348,7 @@ export default function InterfazVentas({
             {productosAgregados.map((producto, index) => (
               <tbody key={index}>
                 <tr>
-                  <th>{index + 1}</th>
+                  <td>{index + 1}</td>
                   <td>{producto.nombre}</td>
                   <td>{producto.precio_venta}</td>
                   {/**@ts-ignore */}
@@ -370,7 +375,7 @@ export default function InterfazVentas({
         </div>
       </div>
       <div className=" flex flex-row justify-center lg:justify-end items-center mt-4 ">
-        <div className="flex flex-col w-2/4  lg:w-96 lg:mr-16 gap-4">
+        <div className="flex flex-col w-2/4  lg:w-96 lg:mr-16 gap-4 justify-center items-center">
           <div className="form-control">
             <div className="input-group mb-4">
               <span>Descuento</span>
