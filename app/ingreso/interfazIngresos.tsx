@@ -61,6 +61,9 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
                 name="telefono"
                 id="telefono"
                 onChange={(e) => setTelefono(e.target.value)}
+                required
+                minLength={10}
+                maxLength={10}
               />
               <datalist id="clientes">
                 {clientes.map((cliente, index) => (
@@ -88,7 +91,7 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
         </div>
       </div>
       {encontrado == "encontrado" ? (
-        <div className="stats stats-vertical lg:stats-horizontal shadow scale-75 lg:scale-100">
+        <div className="stats stats-vertical lg:stats-horizontal shadow scale-75 lg:scale-100 mt-4">
           <div className="stat">
             <div className="stat-title">Telefono del Cliente</div>
             <div className="stat-value">{telefonoAux}</div>
@@ -112,10 +115,10 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
           </div>
         </div>
       ) : (
-        <div className=" text-lg text-center flex flex-col w-full ">
+        <div className=" text-lg text-center flex flex-col w-full mt-4">
           <div className="divider w-4/5 self-center"></div>
 
-          <h3>No se encontro el cliete</h3>
+          <h3>No se encontro cliente con membresia activa</h3>
         </div>
       )}
     </div>

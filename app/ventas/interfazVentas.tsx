@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Database } from "@/types/supabase";
 import { useEffect, useState } from "react";
-import { DescribcionProductos } from "./descripcionProductos";
+import { DescripcionProductos } from "./descripcionProductos";
 import { useSupabase } from "../../components/supabase-provider";
 import { useRouter } from "next/navigation";
 
@@ -26,12 +26,12 @@ export default function InterfazVentas({
   const [productoSeleccionado, setProductoSeleccionado] = useState<Producto>();
   const [cantidad, setCantidad] = useState(0);
   const [productosAgregados, setProductosAgregados] = useState<Producto[]>([]);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(0.0);
   const [clienteID, setClienteID] = useState<string>();
   const [correoCliente, setCorreoCliente] = useState<string>();
   const { supabase, session } = useSupabase();
-  const [descuento, setDescuento] = useState(0);
-  const [totalDescuento, setTotalDescuento] = useState(0);
+  const [descuento, setDescuento] = useState(0.0);
+  const [totalDescuento, setTotalDescuento] = useState(0.0);
   //  TODO: Hacer que el descuento sea de acuerdo a la memebresia del cliente
   // TODO: Hacer que te mande a una nueva interfaz de venta cuando se haga el pago donde se muestren el detalle venta
   const router = useRouter();
@@ -203,6 +203,27 @@ export default function InterfazVentas({
       }
     }
   };
+
+  let finalizarVentaButton = null;
+  if (clienteID != undefined && total != 0 && empleadoID != undefined) {
+    finalizarVentaButton = (
+      <DescripcionProductos
+        productos={productosAgregados}
+        total={totalDescuento}
+        clienteID={clienteID!}
+        empleadoID={empleadoID!}
+      />
+    );
+  } else {
+    finalizarVentaButton = (
+      <button
+        className="btn btn-info"
+        onClick={() => alert("Debe seleccionar un cliente y agregar productos")}
+      >
+        Ver Detalles
+      </button>
+    );
+  }
   return (
     <>
       <div className="flex flex-col gap-4 justify-center items-center pt-4">
@@ -376,11 +397,11 @@ export default function InterfazVentas({
       </div>
       <div className=" flex flex-row justify-center lg:justify-end items-center mt-4 ">
         <div className="flex flex-col w-2/4  lg:w-96 lg:mr-16 gap-4 justify-center items-center">
-          <div className="form-control">
-            <div className="input-group mb-4">
+          <div className="form-control ">
+            <div className="input-group mb-4 ">
               <span>Descuento</span>
               <select
-                className="select select-bordered"
+                className="select select-bordered h-[70px]"
                 // onChange={(e) => setDescuento(parseInt(e.target.value))}
                 /// value={descuento}
               >
@@ -391,11 +412,11 @@ export default function InterfazVentas({
               <span>Total con descuento {totalDescuento}</span>
             </div>
             <label className="input-group">
-              <span>Total</span>
+              <span>Total $</span>
               <input
                 type="text"
-                placeholder="0"
-                className="input input-bordered"
+                placeholder="0.00"
+                className="input input-bordered "
                 inputMode="numeric"
                 readOnly
                 value={total}
@@ -403,9 +424,7 @@ export default function InterfazVentas({
               <span>MXN</span>
             </label>
           </div>
-          <button className="btn btn-info" onClick={agregarVenta}>
-            Finalizar Venta
-          </button>
+          {finalizarVentaButton}
         </div>
       </div>
     </>

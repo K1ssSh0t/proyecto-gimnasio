@@ -80,6 +80,8 @@ export default function MisDatos({ cliente }: { cliente: Clientes }) {
                   className="input input-bordered w-full max-w-xs"
                   value={clienteTelefono!}
                   onChange={(e) => setClienteTelefono(e.target.value)}
+                  minLength={10}
+                  maxLength={10}
                 />
               </div>
             </div>
