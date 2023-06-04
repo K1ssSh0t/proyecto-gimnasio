@@ -125,11 +125,11 @@ export default function EmpleadosLista({
                 <th className=" capitalize ">Nombre</th>
                 <th className=" capitalize">Apellido Paterno</th>
                 <th className=" capitalize ">Apellido Materno</th>
-                <th className=" capitalize ">Telefono</th>
+                <th className=" capitalize ">Teléfono</th>
                 <th className=" capitalize">Correo</th>
                 <th className="capitalize ">Puesto</th>
-                <th className="capitalize ">Direccion</th>
-                <th className=" capitalzie">Acciones</th>
+                <th className="capitalize ">Dirección</th>
+                <th className=" capitalize">Acciones</th>
               </tr>
             </thead>
             <tbody>{currentPageData}</tbody>

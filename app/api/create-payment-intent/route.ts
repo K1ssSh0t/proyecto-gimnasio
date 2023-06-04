@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
   if (membresia!.length > 0) {
     return NextResponse.json(
-      { error: "Ya tienes una membresia" },
+      { error: "Ya tienes una membresía" },
       { status: 403 }
     );
   }

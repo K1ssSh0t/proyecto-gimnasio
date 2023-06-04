@@ -16,7 +16,7 @@ export function InscripcionesClases({ clases }: { clases: clases }) {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Descripcion</th>
+            <th>Descripción</th>
             <th>Cantidad de Inscripciones</th>
           </tr>
         </thead>

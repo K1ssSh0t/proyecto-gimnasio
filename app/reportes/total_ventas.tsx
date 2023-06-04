@@ -47,7 +47,7 @@ export default function TotalVentaMes({
         <thead>
           <tr>
             <th>Mes</th>
-            <th>Anio</th>
+            <th>Año</th>
             <th>Total Vendido</th>
           </tr>
         </thead>

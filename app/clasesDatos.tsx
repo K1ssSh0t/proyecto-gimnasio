@@ -37,7 +37,7 @@ export function Clases({ clases }: { clases: Clases[] }) {
                       <div className="stat-desc"></div>
                     </div>
                     <div className="stat">
-                      <div className="stat-title">Hora de Finalizacion</div>
+                      <div className="stat-title">Hora de Finalización</div>
                       <div className="stat-value">{clase.hora_fin}</div>
                       <div className="stat-desc"></div>
                     </div>

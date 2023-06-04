@@ -164,7 +164,7 @@ export function ActualizarEmpleado({ empleado }: Props) {
                       />
 
                       <label className="label">
-                        <span className="label-text">Telefono</span>
+                        <span className="label-text">Teléfono</span>
                       </label>
                       <input
                         className="input input-bordered w-full"
@@ -177,7 +177,7 @@ export function ActualizarEmpleado({ empleado }: Props) {
                         }
                       />
                       <label className="label">
-                        <span className="label-text">Correo Electronico</span>
+                        <span className="label-text">Correo Electrónico</span>
                       </label>
                       <input
                         className="input input-bordered w-full"

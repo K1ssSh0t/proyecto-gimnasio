@@ -8,7 +8,7 @@ export function MiMembresia({ membresia }: { membresia: Membresia }) {
     <div className=" flex justify-center p-4">
       <div className="card w-4/5 bg-base-300 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title self-center">Mi Membresia</h2>
+          <h2 className="card-title self-center">Mi Membresía</h2>
           <div className="stats stats-vertical lg:stats-horizontal shadow">
             <div className="stat">
               <div className="stat-title">Estado</div>
@@ -19,7 +19,7 @@ export function MiMembresia({ membresia }: { membresia: Membresia }) {
             </div>
 
             <div className="stat">
-              <div className="stat-title">Fecha de Activacion</div>
+              <div className="stat-title">Fecha de Activación</div>
               <div className="stat-value">{membresia.fecha_activacion}</div>
               <div className="stat-desc">Vigente hasta ...</div>
             </div>
@@ -27,7 +27,7 @@ export function MiMembresia({ membresia }: { membresia: Membresia }) {
             <div className="stat">
               <div className="stat-title">Tipo de membresia</div>
               <div className="stat-value">{membresia.id_tipo_membresia}</div>
-              <div className="stat-desc">Membresia Basica , etc</div>
+              <div className="stat-desc">Membresía Básica , etc</div>
             </div>
           </div>
           <div className="card-actions justify-end"></div>

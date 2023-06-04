@@ -15,9 +15,9 @@ type data =
 export function VentasMembresias({ membresias }: { membresias: data }) {
   function obtenerCantidadPorTipoMembresia(arr: data) {
     const tiposMembresia = [
-      "Membresia PRO",
-      "Membresia Intermedia",
-      "Membresia Bascia",
+      "Membresía PRO",
+      "Membresía Intermedia",
+      "Membresía Básica",
     ];
     const cantidadPorTipoMembresia = [0, 0, 0];
 
@@ -33,7 +33,7 @@ export function VentasMembresias({ membresias }: { membresias: data }) {
 
   const resultado = obtenerCantidadPorTipoMembresia(membresias);
   const data = {
-    labels: ["PRO", "Intermedia", "Basica"],
+    labels: ["PRO", "Intermedia", "Básica"],
     datasets: [
       {
         label: "Cantidad de ventas",

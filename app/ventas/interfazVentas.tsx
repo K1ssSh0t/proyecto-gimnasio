@@ -321,7 +321,7 @@ export default function InterfazVentas({
         <div className="w-full flex flex-col justify-start items-center  border-solid border-2 border-sky-500  aspect-square gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Telefono del Cliente</span>
+              <span className="label-text">Teléfono del Cliente</span>
             </label>
             <label className="input-group">
               <input

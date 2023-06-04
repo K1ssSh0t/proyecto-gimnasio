@@ -58,7 +58,7 @@ export default async function MisAlumnos() {
                   <th>ID Clase</th>
                   <th>Nombre de la Clase</th>
                   <th>Nombre Cliente</th>
-                  <th>Telefono Cliente</th>
+                  <th>Teléfono Cliente</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,9 +86,9 @@ export default async function MisAlumnos() {
             <thead>
               <tr>
                 <th>ID Clase</th>
-                <th>Nomnbre dela Clase</th>
+                <th>Nombre de la Clase</th>
                 <th>Nombre Cliente</th>
-                <th>Telefono Cliente</th>
+                <th>Teléfono Cliente</th>
               </tr>
             </thead>
             <tbody>

@@ -62,7 +62,7 @@ export default function MisDatos({ cliente }: { cliente: Clientes }) {
                   onChange={(e) => setClienteApellidos(e.target.value)}
                 />
                 <label className="label">
-                  <span className="label-text">Correo Electronico</span>
+                  <span className="label-text">Correo Electrónico</span>
                 </label>
                 <input
                   type="email"
@@ -72,7 +72,7 @@ export default function MisDatos({ cliente }: { cliente: Clientes }) {
                   readOnly
                 />
                 <label className="label">
-                  <span className="label-text">Telefono</span>
+                  <span className="label-text">Teléfono</span>
                 </label>
                 <input
                   type="tel"

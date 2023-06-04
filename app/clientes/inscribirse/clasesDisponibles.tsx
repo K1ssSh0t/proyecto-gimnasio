@@ -91,7 +91,7 @@ export function ClasesDisponibles({
               <th>Fecha de Fin</th>
               <th>Hora de Inicio</th>
               <th>Hora de Fin</th>
-              <th>Inscribirse</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -134,7 +134,7 @@ export function ClasesDisponibles({
               <th>Fecha de Fin</th>
               <th>Hora de Inicio</th>
               <th>Hora de Fin</th>
-              <th>Inscribirse</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>

@@ -33,8 +33,8 @@ export function MembresiaButton({ membresia }: { membresia: Membresias }) {
             return router.push("/login");
           }
           if (response.status == 403) {
-            //toast ya tinees una membresia
-            console.error("ya tienes una membresia");
+            //toast ya tinees una membresía
+            console.error("ya tienes una membresía");
             return router.push("/clientes");
           }
           response.json().then((data) => {

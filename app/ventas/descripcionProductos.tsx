@@ -166,7 +166,10 @@ export function DescripcionProductos({
                       </tbody>
                     ))}
                   </table>
-                  <p className="text-center"> Total con Descuento: $ {total}</p>
+                  <p className="text-center">
+                    {" "}
+                    Total con Descuento Seleccionado: $ {total}
+                  </p>
 
                   <button className="btn btn-info" onClick={agregarVenta}>
                     Finalizar Venta

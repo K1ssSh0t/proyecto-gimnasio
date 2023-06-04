@@ -53,7 +53,7 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
             <label>
               <input
                 type="text"
-                placeholder="Buscar Telefono…"
+                placeholder="Buscar Teléfono…"
                 className="input input-bordered"
                 list="clientes"
                 inputMode="tel"
@@ -93,7 +93,7 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
       {encontrado == "encontrado" ? (
         <div className="stats stats-vertical lg:stats-horizontal shadow scale-75 lg:scale-100 mt-4">
           <div className="stat">
-            <div className="stat-title">Telefono del Cliente</div>
+            <div className="stat-title">Teléfono del Cliente</div>
             <div className="stat-value">{telefonoAux}</div>
             <div className="stat-desc"></div>
           </div>
@@ -107,7 +107,7 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
           </div>
 
           <div className="stat">
-            <div className="stat-title">Fecha de Activacion</div>
+            <div className="stat-title">Fecha de Activación</div>
             <div className="stat-value">
               {estadoMembresia![0].fecha_activacion}
             </div>
@@ -118,7 +118,7 @@ export function InterfazIngresos({ clientes }: { clientes: Clientes[] }) {
         <div className=" text-lg text-center flex flex-col w-full mt-4">
           <div className="divider w-4/5 self-center"></div>
 
-          <h3>No se encontro cliente con membresia activa</h3>
+          <h3>No se encontró cliente con membresia activa</h3>
         </div>
       )}
     </div>

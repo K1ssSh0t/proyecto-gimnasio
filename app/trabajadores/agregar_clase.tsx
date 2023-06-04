@@ -111,7 +111,7 @@ const AagregarClase: React.FC<Props> = ({ listaIdsEmpleados }) => {
                   >
                     <div className="form-control w-full">
                       <label className="label">
-                        <span className="label-text">Descripcion</span>
+                        <span className="label-text">Descripción</span>
                       </label>
                       <input
                         className="input input-bordered w-full"

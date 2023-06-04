@@ -123,7 +123,7 @@ const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
             <thead>
               <tr className=" text-center [&>th]:capitalize ">
                 <th style={{ position: "unset" }}>Clase ID</th>
-                <th className=" ">Descripcion</th>
+                <th className=" ">Descripción</th>
                 <th className=" ">Fecha de Inicio</th>
                 <th className=" ">Fecha de Fin</th>
                 <th className=" ">Hora de Inicio</th>

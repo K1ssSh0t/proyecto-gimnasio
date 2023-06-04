@@ -28,7 +28,7 @@ export function Membresias({ membresias }: { membresias: Membresias[] }) {
                     <figure>
                       <img
                         src={membresia.url_imagen}
-                        alt="Membreias"
+                        alt="Membresías"
                         className=" aspect-video"
                       />
                     </figure>
