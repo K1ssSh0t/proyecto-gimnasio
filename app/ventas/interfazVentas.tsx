@@ -11,7 +11,7 @@ type Producto = Database["public"]["Tables"]["producto"]["Row"];
 type Venta = Database["public"]["Tables"]["venta"]["Row"];
 
 type Correos = {
-  email: string | undefined;
+  telefono: string | undefined;
   id: string | undefined;
 };
 
@@ -77,7 +77,7 @@ export default function InterfazVentas({
   useEffect(() => {
     const encontrar = async () => {
       const encontrado = correos.find(
-        (correo) => correo.email === correoCliente
+        (correo) => correo.telefono === correoCliente
       );
       setClienteID(encontrado?.id);
     };
@@ -110,6 +110,13 @@ export default function InterfazVentas({
     setCantidad(0);
     router.refresh();
   }, [idVenta]);
+
+  const borrarValores = () => {
+    setTotal(0);
+    setProductosAgregados([]);
+    setCorreoCliente("");
+    setCantidad(0);
+  };
 
   // Funcion que genera la venta en la base de datos
   // y asigna el id de la venta a la variable idVenta para que se pueda generar los detalles de la venta
@@ -156,14 +163,14 @@ export default function InterfazVentas({
       console.log(error);
     }*/
   };
-
+  /*
   const handleCorreoCliente = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const correo = (e.target as HTMLInputElement).value;
     setCorreoCliente(correo);
     const encontrado = correos.find((correo) => correo.email === correoCliente);
     setClienteID(encontrado?.id);
-  };
+  };*/
 
   // Funcion que calcula el total
   function calcularTotal(productosAgregados: Producto[]) {
@@ -212,6 +219,7 @@ export default function InterfazVentas({
         total={totalDescuento}
         clienteID={clienteID!}
         empleadoID={empleadoID!}
+        manejarValores={borrarValores}
       />
     );
   } else {
@@ -313,20 +321,23 @@ export default function InterfazVentas({
         <div className="w-full flex flex-col justify-start items-center  border-solid border-2 border-sky-500  aspect-square gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Correo del Cliente</span>
+              <span className="label-text">Telefono del Cliente</span>
             </label>
             <label className="input-group">
               <input
-                type="email"
-                placeholder="ejemplo@email.com"
+                type="text"
+                placeholder="000-000-00-00"
                 className="input input-bordered"
                 list="correos"
+                inputMode="tel"
+                maxLength={10}
+                minLength={10}
                 value={correoCliente}
                 onChange={(e) => setCorreoCliente(e.target.value)}
               />
               <datalist id="correos">
                 {correos.map((correo, index) => (
-                  <option value={correo.email} key={index} />
+                  <option value={correo.telefono} key={index} />
                 ))}
               </datalist>
               <span>Correo</span>

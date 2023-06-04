@@ -11,7 +11,7 @@ async function getProductosNombre(supabase: any) {
 async function getClientes(supabase: any) {
   let { data: clientes, error } = await supabase
     .from("clientes")
-    .select("email,id");
+    .select("telefono,id");
 
   return clientes;
 }

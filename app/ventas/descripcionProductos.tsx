@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import { Database } from "@/types/supabase";
 import { useEffect, useState } from "react";
@@ -12,15 +11,17 @@ export function DescripcionProductos({
   total,
   clienteID,
   empleadoID,
+  manejarValores,
 }: {
   productos: Producto[];
   total: number;
   clienteID: string;
   empleadoID: string;
+  manejarValores: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const [idVenta, setIdVenta] = useState<number>();
+  // const [idVenta, setIdVenta] = useState<number>();
 
   const supabase = createBrowserClient();
 
@@ -73,14 +74,18 @@ export function DescripcionProductos({
       // }
     };
 
-    const ventaGenerada = await generarVenta();
+    try {
+      const ventaGenerada = await generarVenta();
+      //await setIdVenta(ventaGenerada![0].id);
+      await generarDetallesdeVentas(ventaGenerada![0].id);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      manejarValores();
+      router.refresh();
+    }
 
-    setIdVenta(ventaGenerada![0].id);
-
-    generarDetallesdeVentas(ventaGenerada![0].id);
-
-    router.refresh();
-    window.location.reload();
+    //window.location.reload();
   };
   return (
     <div>
