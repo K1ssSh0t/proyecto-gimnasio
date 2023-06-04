@@ -12,6 +12,9 @@ type clases =
 export function InscripcionesClases({ clases }: { clases: clases }) {
   return (
     <div className="overflow-x-auto w-full">
+      <h5 className="text-lg font-bold  text-center text-[#666666] mb-2">
+        Inscripciones por Clases
+      </h5>
       <table className="table table-zebra w-full">
         <thead>
           <tr>

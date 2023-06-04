@@ -11,7 +11,19 @@ type data =
       cantidad: number;
     }[]
   | null;
-
+export const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "bottom" as const,
+    },
+    title: {
+      display: true,
+      text: "Membresías Vendidas",
+    },
+  },
+};
 export function VentasMembresias({ membresias }: { membresias: data }) {
   function obtenerCantidadPorTipoMembresia(arr: data) {
     const tiposMembresia = [
@@ -65,5 +77,5 @@ export function VentasMembresias({ membresias }: { membresias: data }) {
       },
     ],
   };
-  return <Pie data={data} />;
+  return <Pie data={data} options={options} />;
 }

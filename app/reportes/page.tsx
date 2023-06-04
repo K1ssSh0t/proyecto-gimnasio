@@ -64,7 +64,7 @@ export default function InterfazReportes() {
   async function getInscripcionesPorClase() {
     let { data, error } = await supabase
       .rpc("obtener_clases_inscripciones")
-      .order("clase_id", { ascending: true });
+      .order("cantidad", { ascending: false });
 
     if (error) console.error(error);
     else return data;
@@ -73,7 +73,7 @@ export default function InterfazReportes() {
   async function getProductosMasVendidos() {
     let { data, error } = await supabase
       .rpc("obtener_productos_mas_vendidos")
-      .order("producto_id", { ascending: true });
+      .order("total_ventas", { ascending: false });
 
     if (error) console.error(error);
     else return data;
@@ -82,7 +82,7 @@ export default function InterfazReportes() {
   async function getProductosMenosVendidos() {
     let { data, error } = await supabase
       .rpc("obtener_productos_menos_vendidos")
-      .order("producto_id", { ascending: true });
+      .order("cantidad_vendida", { ascending: false });
 
     if (error) console.error(error);
     else return data;
@@ -121,14 +121,14 @@ export default function InterfazReportes() {
           <ProductosMenosVendidos productos={menos_productos || []} />
         </div>
 
-        <div className=" flex flex-col items-center justify-center">
+        <div className=" flex flex-col items-center justify-center lg:w-[600px] lg:h-[400px]">
           <VentasMembresias membresias={membresias || []} />
         </div>
         <div className=" flex flex-col items-center justify-center m-4">
           <InscripcionesClases clases={clases || []} />
         </div>
       </div>
-      <div className="flex items-center justify-center m-4">
+      <div className="flex items-center justify-center m-4 bg-white">
         <button onClick={handlePrint} className="btn btn-info">
           Imprimir Reporte
         </button>

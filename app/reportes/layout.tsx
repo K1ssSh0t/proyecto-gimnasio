@@ -8,5 +8,5 @@ export default function reportesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section>{children}</section>;
+  return <section className="bg-white">{children}</section>;
 }
