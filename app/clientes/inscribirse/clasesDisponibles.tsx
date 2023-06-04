@@ -148,7 +148,7 @@ export function ClasesDisponibles({
                 <td>{clase.hora_fin}</td>
                 <td>
                   <button
-                    className="btn btn-info btn-sm"
+                    className="btn btn-error btn-sm"
                     name={`opciones${clase.id}`}
                     onClick={(event) =>
                       /* @ts-ignore */
