@@ -299,7 +299,7 @@ export default function InterfazVentas({
                   <tr>
                     <td>{index + 1}</td>
                     <td>{productoFiltered.nombre}</td>
-                    <td>{productoFiltered.precio_venta}</td>
+                    <td>$ {productoFiltered.precio_venta}</td>
                     <td>{productoFiltered.inventario_actual}</td>
                     <th>
                       <label>
