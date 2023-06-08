@@ -194,18 +194,33 @@ export default function InterfazVentas({
   // y que si el producto ya se encuentra agregado la suma la cantidad que selecciono
   const handleArgregarProducto = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (productoSeleccionado != null && cantidad > 0) {
+    if (
+      productoSeleccionado != null &&
+      cantidad > 0 &&
+      cantidad <= Number(productoSeleccionado.inventario_actual)
+    ) {
       const index = productosAgregados.findIndex(
         (producto) => producto === productoSeleccionado
       );
 
       if (index !== -1) {
         /** @ts-ignore */
-        productosAgregados[index].cantidad += cantidad;
+
+        const newCantidad =
+          cantidad > Number(productoSeleccionado.inventario_actual)
+            ? Number(productoSeleccionado.inventario_actual)
+            : cantidad;
+        /** @ts-ignore */
+        productosAgregados[index].cantidad = newCantidad;
         setProductosAgregados([...productosAgregados]);
       } else {
         /** @ts-ignore */
-        productoSeleccionado.cantidad = cantidad;
+        const newCantidad =
+          cantidad > Number(productoSeleccionado.inventario_actual)
+            ? Number(productoSeleccionado.inventario_actual)
+            : cantidad;
+        /** @ts-ignore */
+        productoSeleccionado.cantidad = newCantidad;
         setProductosAgregados([...productosAgregados, productoSeleccionado]);
       }
     }
