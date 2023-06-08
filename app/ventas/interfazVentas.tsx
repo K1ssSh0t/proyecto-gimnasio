@@ -216,7 +216,8 @@ export default function InterfazVentas({
     finalizarVentaButton = (
       <DescripcionProductos
         productos={productosAgregados}
-        total={totalDescuento}
+        totalDescuento={totalDescuento}
+        subtotal={total}
         clienteID={clienteID!}
         empleadoID={empleadoID!}
         manejarValores={borrarValores}
@@ -298,8 +299,10 @@ export default function InterfazVentas({
                 <tbody key={index}>
                   <tr>
                     <td>{index + 1}</td>
-                    <td>{productoFiltered.nombre}</td>
-                    <td>$ {productoFiltered.precio_venta}</td>
+                    <td className="truncate max-w-xs">
+                      {productoFiltered.nombre}
+                    </td>
+                    <td>$ {productoFiltered.precio_venta?.toFixed(2)}</td>
                     <td>{productoFiltered.inventario_actual}</td>
                     <th>
                       <label>
@@ -381,8 +384,8 @@ export default function InterfazVentas({
               <tbody key={index}>
                 <tr>
                   <td>{index + 1}</td>
-                  <td>{producto.nombre}</td>
-                  <td>{producto.precio_venta}</td>
+                  <td className="truncate max-w-xs">{producto.nombre}</td>
+                  <td>{producto.precio_venta?.toFixed(2)}</td>
                   {/**@ts-ignore */}
                   <th>{producto.cantidad}</th>
                   <th>
@@ -420,7 +423,7 @@ export default function InterfazVentas({
                 <option onClick={(e) => setDescuento(10)}>10%</option>
                 <option onClick={(e) => setDescuento(20)}>20%</option>
               </select>
-              <span>Total con descuento {totalDescuento}</span>
+              <span>Total con descuento {totalDescuento.toFixed(2)}</span>
             </div>
             <label className="input-group">
               <span>Total $</span>
@@ -430,7 +433,7 @@ export default function InterfazVentas({
                 className="input input-bordered "
                 inputMode="numeric"
                 readOnly
-                value={total}
+                value={total.toFixed(2)}
               />
               <span>MXN</span>
             </label>
