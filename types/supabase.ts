@@ -387,6 +387,14 @@ export interface Database {
           cantidad_vendida: number;
         }[];
       };
+      obtener_productos_vendidos_hoy: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          nombre_producto: string;
+          cantidad_vendida: number;
+          subtotal: number;
+        }[];
+      };
     };
 
     Enums: {

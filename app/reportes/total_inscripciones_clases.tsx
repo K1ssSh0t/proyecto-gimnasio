@@ -18,7 +18,7 @@ export function InscripcionesClases({ clases }: { clases: clases }) {
       <table className="table table-zebra w-full">
         <thead>
           <tr>
-            <th>ID</th>
+            <th style={{ position: "unset" }}>ID</th>
             <th>Descripción</th>
             <th>Cantidad de Inscripciones</th>
           </tr>
@@ -26,7 +26,7 @@ export function InscripcionesClases({ clases }: { clases: clases }) {
         <tbody>
           {clases?.map((clase) => (
             <tr key={clase.clase_id}>
-              <th>{clase.clase_id}</th>
+              <td>{clase.clase_id}</td>
               <td>{clase.clase_descripcion}</td>
               <td>{clase.cantidad}</td>
             </tr>

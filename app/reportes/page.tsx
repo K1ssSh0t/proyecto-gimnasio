@@ -12,6 +12,7 @@ import { InscripcionesClases } from "./total_inscripciones_clases";
 import { ProductosMenosVendidos } from "./productos_menos_vendidos";
 
 import { useReactToPrint } from "react-to-print";
+import { VentasHoy } from "./ventaHoy";
 
 type Venta = Database["public"]["Tables"]["venta"]["Row"];
 
@@ -28,6 +29,9 @@ type Productos =
 
 type menos_productos =
   Database["public"]["Functions"]["obtener_productos_menos_vendidos"]["Returns"];
+
+type VentaHoy =
+  Database["public"]["Functions"]["obtener_productos_vendidos_hoy"]["Returns"];
 
 export const revalidate = 0;
 
@@ -52,6 +56,10 @@ export default function InterfazReportes() {
   const [clases, setClases] = React.useState<Clases | undefined | null>();
   const [menos_productos, setMenosProductos] = React.useState<
     menos_productos | undefined | null
+  >();
+
+  const [venta_hoy, setVentaHoy] = React.useState<
+    VentaHoy | undefined | null
   >();
 
   const [mes, setMes] = useState(new Date().getMonth() + 1);
@@ -99,6 +107,13 @@ export default function InterfazReportes() {
     else return data;
   }
 
+  const getVentaHoy = async () => {
+    let { data, error } = await supabase.rpc("obtener_productos_vendidos_hoy");
+
+    if (error) console.error(error);
+    else return data;
+  };
+
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
@@ -106,6 +121,7 @@ export default function InterfazReportes() {
       setClases(await getInscripcionesPorClase());
       setProductos(await getProductosMasVendidos());
       setMenosProductos(await getProductosMenosVendidos());
+      setVentaHoy(await getVentaHoy());
       setLoading(false);
     };
 
@@ -149,6 +165,7 @@ export default function InterfazReportes() {
           <option value="2022">2022</option>
           <option value="2023">2023</option>
         </select>
+        <VentasHoy ventas={venta_hoy || []} />
       </div>
       <div
         className="container mx-auto flex flex-col justify-center items-center md:grid md:grid-cols-2 gap-4 m-4 bg-white "
