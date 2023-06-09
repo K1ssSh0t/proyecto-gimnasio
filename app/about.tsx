@@ -5,16 +5,16 @@ export function AboutUs() {
     <footer className="footer p-10 bg-neutral text-neutral-content">
       <div>
         <span className="footer-title">Ubicación:</span>
-        <a className="link link-hover">Constitución 300, Centro Historico</a>
-        <a className="link link-hover">Oaxaca de Juárez</a>
+        <p className="link link-hover">Constitución 300, Centro Historico</p>
+        <p className="link link-hover">Oaxaca de Juárez</p>
       </div>
       <div>
         <span className="footer-title">Email:</span>
-        <a className="link link-hover">contacto@aurobics.com.mx</a>
+        <p className="link link-hover">contacto@aurobics.com.mx</p>
       </div>
       <div>
         <span className="footer-title">Llámanos:</span>
-        <a className="link link-hover">+52 951 267 4801</a>
+        <p className="link link-hover">+52 951 267 4801</p>
       </div>
     </footer>
   );

@@ -95,8 +95,8 @@ export function VentasHoy({ ventas }: { ventas: Ventas }) {
                         </tr>
                       </thead>
                       <tbody>
-                        {ventas?.map((venta) => (
-                          <tr>
+                        {ventas?.map((venta, index) => (
+                          <tr key={index}>
                             <td>{venta.nombre_producto}</td>
                             <td>{venta.cantidad_vendida}</td>
                             <td>$ {venta.subtotal.toFixed(2)}</td>
