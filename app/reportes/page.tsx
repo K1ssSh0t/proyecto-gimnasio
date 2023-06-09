@@ -58,8 +58,6 @@ export default function InterfazReportes() {
 
   const [anio, setAnio] = useState(new Date().getFullYear());
 
-  console.log(mes, anio);
-
   async function getMembresiasPorTipo() {
     let { data, error } = await supabase.rpc(
       "obtener_membresias_por_tipo_mes_anio",

@@ -38,12 +38,12 @@ const ClasesLista: React.FC<Props> = ({ clasesLista, listaIdsEmpleados }) => {
         <td className="">{clase.hora_fin}</td>
         <td className="">{clase.id_empleado}</td>
         <td className=" flex space-x-4 justify-center">
-          <EliminarClase claseId={clase.id} />
           <ActualizarClase
             clase={clase}
             listaIdsEmpleados={listaIdsEmpleados}
             key={clase.id}
           />
+          <EliminarClase claseId={clase.id} />
         </td>
       </tr>
     ));

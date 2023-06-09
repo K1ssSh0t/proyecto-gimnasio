@@ -35,8 +35,8 @@ function InventoryModule({ listaProductos }: { listaProductos: Producto[] }) {
         <td className="">{producto.precio_venta}</td>
         <td className="">{producto.inventario_actual}</td>
         <td className=" flex space-x-4 justify-center">
-          <BorrarProducto producto={producto} />
           <Modal producto={producto} key={producto.id} />
+          <BorrarProducto producto={producto} />
         </td>
       </tr>
     ));
