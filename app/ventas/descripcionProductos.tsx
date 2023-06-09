@@ -56,15 +56,19 @@ export function DescripcionProductos({
     productos.map(async (producto) => {
       /** @ts-ignore  */
       let subtotal = producto.precio_venta * producto.cantidad;
-      const { data, error } = await supabase.from("detalle_venta").insert([
-        {
-          /** @ts-ignore  */
-          cantidad: producto.cantidad as number,
-          subtotal: subtotal as number,
-          id_venta: idVenta as number,
-          id_producto: producto.id as number,
-        },
-      ]);
+      try {
+        const { data, error } = await supabase.from("detalle_venta").insert([
+          {
+            /** @ts-ignore  */
+            cantidad: producto.cantidad as number,
+            subtotal: subtotal as number,
+            id_venta: idVenta as number,
+            id_producto: producto.id as number,
+          },
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
     });
   };
 

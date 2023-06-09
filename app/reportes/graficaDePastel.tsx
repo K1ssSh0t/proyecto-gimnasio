@@ -13,9 +13,9 @@ import { Bar } from "react-chartjs-2";
 
 type Productos =
   | {
-      producto_id: number;
-      producto_nombre: string;
-      total_ventas: number;
+      id_producto: number;
+      nombre: string;
+      cantidad_vendida: number;
     }[]
   | null;
 
@@ -48,8 +48,10 @@ export const options = {
 };
 
 export default function Grafica({ productos }: { productos: Productos }) {
-  const nombres = productos!.map((producto) => producto.producto_nombre);
-  const totalProductos = productos?.map((producto) => producto.total_ventas);
+  const nombres = productos!.map((producto) => producto.nombre);
+  const totalProductos = productos?.map(
+    (producto) => producto.cantidad_vendida
+  );
 
   const data = {
     labels: nombres,

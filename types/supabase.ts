@@ -353,23 +353,42 @@ export interface Database {
           cantidad: number;
         }[];
       };
-      obtener_productos_mas_vendidos: {
-        Args: Record<PropertyKey, never>;
+      obtener_membresias_por_tipo_mes_anio: {
+        Args: {
+          mes: number;
+          anio: number;
+        };
         Returns: {
-          producto_id: number;
-          producto_nombre: string;
-          total_ventas: number;
+          tipo_membresia_nombre: string;
+          cantidad: number;
         }[];
       };
-      obtener_productos_menos_vendidos: {
-        Args: Record<PropertyKey, never>;
+
+      obtener_productos_mas_vendidos: {
+        Args: {
+          mes: number;
+          anio: number;
+        };
         Returns: {
-          producto_id: number;
-          producto_nombre: string;
+          id_producto: number;
+          nombre: string;
+          cantidad_vendida: number;
+        }[];
+      };
+
+      obtener_productos_menos_vendidos: {
+        Args: {
+          mes: number;
+          anio: number;
+        };
+        Returns: {
+          id_producto: number;
+          nombre: string;
           cantidad_vendida: number;
         }[];
       };
     };
+
     Enums: {
       app_role: "cliente" | "empleado";
     };

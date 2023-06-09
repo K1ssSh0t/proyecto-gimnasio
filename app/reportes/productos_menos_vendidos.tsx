@@ -13,8 +13,8 @@ import { Bar } from "react-chartjs-2";
 
 type Productos =
   | {
-      producto_id: number;
-      producto_nombre: string;
+      id_producto: number;
+      nombre: string;
       cantidad_vendida: number;
     }[]
   | null;
@@ -52,7 +52,7 @@ export function ProductosMenosVendidos({
 }: {
   productos: Productos;
 }) {
-  const nombres = productos!.map((producto) => producto.producto_nombre);
+  const nombres = productos!.map((producto) => producto.nombre);
   const totalProductos = productos?.map(
     (producto) => producto.cantidad_vendida
   );

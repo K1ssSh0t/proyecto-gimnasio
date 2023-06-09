@@ -54,8 +54,17 @@ export default function InterfazReportes() {
     menos_productos | undefined | null
   >();
 
+  const [mes, setMes] = useState(new Date().getMonth() + 1);
+
+  const [anio, setAnio] = useState(new Date().getFullYear());
+
+  console.log(mes, anio);
+
   async function getMembresiasPorTipo() {
-    let { data, error } = await supabase.rpc("obtener_membresias_por_tipo");
+    let { data, error } = await supabase.rpc(
+      "obtener_membresias_por_tipo_mes_anio",
+      { anio, mes }
+    );
 
     if (error) console.error(error);
     else return data;
@@ -71,18 +80,22 @@ export default function InterfazReportes() {
   }
 
   async function getProductosMasVendidos() {
-    let { data, error } = await supabase
-      .rpc("obtener_productos_mas_vendidos")
-      .order("total_ventas", { ascending: false });
+    let { data, error } = await supabase.rpc("obtener_productos_mas_vendidos", {
+      anio,
+      mes,
+    });
+    //.order("cantidad_vendida", { ascending: false });
 
     if (error) console.error(error);
     else return data;
   }
 
   async function getProductosMenosVendidos() {
-    let { data, error } = await supabase
-      .rpc("obtener_productos_menos_vendidos")
-      .order("cantidad_vendida", { ascending: false });
+    let { data, error } = await supabase.rpc(
+      "obtener_productos_menos_vendidos",
+      { anio, mes }
+    );
+    //.order("cantidad_vendida", { ascending: false });
 
     if (error) console.error(error);
     else return data;
@@ -99,7 +112,7 @@ export default function InterfazReportes() {
     };
 
     fetchData().catch(console.error);
-  }, []);
+  }, [, mes, anio]);
 
   if (isLoading)
     return (
@@ -109,6 +122,36 @@ export default function InterfazReportes() {
     );
   return (
     <>
+      <div className="flex flex-row items-center justify-center my-4 ">
+        <select
+          className="select w-full max-w-[140px] mx-2 "
+          placeholder="Selecciona el Mes"
+          onChange={(e) => setMes(parseInt(e.target.value))}
+          defaultValue={mes}
+        >
+          <option value="1">Enero</option>
+          <option value="2">Febrero</option>
+          <option value="3">Marzo</option>
+          <option value="4">Abril</option>
+          <option value="5">Mayo</option>
+          <option value="6">Junio</option>
+          <option value="7">Julio</option>
+          <option value="8">Agosto</option>
+          <option value="9">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
+        <select
+          className="select w-full max-w-[100px] mx-2 "
+          placeholder="Selecciona el Año"
+          onChange={(e) => setAnio(parseInt(e.target.value))}
+          defaultValue={anio}
+        >
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+        </select>
+      </div>
       <div
         className="container mx-auto flex flex-col justify-center items-center md:grid md:grid-cols-2 gap-4 m-4 bg-white "
         ref={componentRef}
