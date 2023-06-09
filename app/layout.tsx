@@ -9,6 +9,7 @@ import SupabaseProvider from "../components/supabase-provider";
 import NavigationMenu from "../react_components/navBar";
 
 import "tailwindcss/tailwind.css";
+import { AboutUs } from "./about";
 
 // do not cache this layout
 export const revalidate = 0;
@@ -36,7 +37,11 @@ export default async function RootLayout({
         <SupabaseProvider session={session}>
           <SupabaseListener serverAccessToken={session?.access_token} />
 
-          <NavigationMenu> {children}</NavigationMenu>
+          <NavigationMenu>
+            {" "}
+            {children}
+            <AboutUs />
+          </NavigationMenu>
         </SupabaseProvider>
       </body>
     </html>
